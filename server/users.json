@@ -1,0 +1,72 @@
+[
+    {
+        "first_name": "Chaviti",
+        "last_name": "Sai Leela",
+        "email": "chavitisaileela@gmail.com",
+        "phone": "+919440610681",
+        "password": "Sail",
+        "role": "Verifier"
+    },
+    {
+        "first_name": "Sai",
+        "last_name": "Leela",
+        "email": "chavitisaileela0@gmail.com",
+        "phone": "+919440610682",
+        "password": "Saill",
+        "role": "Admin"
+    },
+    {
+        "first_name": "Chaviti",
+        "last_name": "Sai Leela",
+        "email": "btds23055@joyuniversity.edu.in",
+        "phone": "+919440610682",
+        "location": "tirupati, IND",
+        "password": "Sai",
+        "role": "Admin"
+    },
+    {
+        "first_name": "Chaviti",
+        "last_name": "Sai Leela",
+        "email": "chavitisaileela1@gmail.com",
+        "phone": "+919440610682",
+        "location": "Tiruchanur, India, 517503",
+        "password": "Sail",
+        "role": "Admin"
+    },
+    {
+        "first_name": "Chaviti",
+        "last_name": "Sai Leela",
+        "email": "chavitisaileela3@gmail.com",
+        "phone": "+919440610681",
+        "location": "produtur,IND",
+        "password": "Sai",
+        "role": "Admin"
+    },
+    {
+        "first_name": "Sweety",
+        "last_name": "Sai",
+        "email": "chavitisaileela4@gmail.com",
+        "phone": "+919440610682",
+        "location": "ooteru, India",
+        "password": "Sai",
+        "role": "Admin"
+    },
+    {
+        "first_name": "Sweety",
+        "last_name": "Leela",
+        "email": "chavitisaileela5@gmail.com",
+        "phone": "+919440610682",
+        "location": "oteru, India",
+        "password": "Sa",
+        "role": "Admin"
+    },
+    {
+        "first_name": "Sweety",
+        "last_name": "Leela",
+        "email": "chavitisaileela6@gmail.com",
+        "phone": "+919440610682",
+        "location": "Tiruchanur, India",
+        "password": "sai",
+        "role": "Admin"
+    }
+]

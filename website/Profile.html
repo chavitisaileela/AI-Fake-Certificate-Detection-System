@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings - Profile Details</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Light Mode Variables (Default) */
+        :root {
+            --bg-body: #f1f5f9;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --input-bg: #f8fafc;
+            --accent-purple: #8b5cf6;
+            --accent-purple-hover: #7c3aed;
+        }
+
+        /* Dark Mode Variables - Tied to Root */
+        :root[data-theme="dark"] {
+            --bg-body: #070714;
+            --bg-card: #0f0f23;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #231b42;
+            --input-bg: #070714;
+            --accent-purple: #8b5cf6;
+            --accent-purple-hover: #7c3aed;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar { 
+            width: 260px; 
+            background: #0f0f23; 
+            border-right: 1px solid var(--border-color); 
+            padding: 24px; 
+            display: flex; 
+            flex-direction: column; 
+            box-sizing: border-box; 
+            flex-shrink: 0; 
+        }
+        
+        .sidebar-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .sidebar a { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            color: #94a3b8; 
+            text-decoration: none; 
+            padding: 12px 16px; 
+            border-radius: 8px; 
+            margin-bottom: 8px; 
+            font-weight: 600; 
+            font-size: 15px; 
+        }
+        
+        .sidebar a:hover, .sidebar a.active { 
+            background: rgba(139, 92, 246, 0.15); 
+            color: #a78bfa; 
+        }
+
+        .main-container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            min-width: 0; 
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-width: 1100px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .profile-banner {
+            background: linear-gradient(135deg, #8b5cf6, #d946ef);
+            border-radius: 12px;
+            padding: 24px 32px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .avatar-container {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .avatar-circle {
+            width: 75px;
+            height: 75px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            overflow: hidden;
+        }
+
+        .avatar-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-edit-overlay {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: #0f0f23;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            border: 1.5px solid white;
+        }
+
+        .banner-text h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .banner-text p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            margin-bottom: 16px;
+        }
+
+        .info-item label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .info-item p {
+            font-size: 15px;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .location-input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .location-input-wrapper input {
+            flex: 1;
+            padding: 14px 16px;
+            border: 1px solid #3b2d75;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            background-color: var(--input-bg);
+            color: var(--text-main);
+        }
+
+        .location-input-wrapper input:focus {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+        }
+
+        .btn-location-detect {
+            background-color: var(--accent-purple);
+            color: white;
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-location-detect:hover {
+            background-color: var(--accent-purple-hover);
+        }
+
+        .btn-purple {
+            background-color: var(--accent-purple); 
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-purple:hover {
+            background-color: var(--accent-purple-hover);
+        }
+
+        .btn-teal-toggle {
+            background-color: #2dd4bf;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-settings-page {
+            background-color: #1e1e38;
+            color: #c084fc;
+            border: 1px solid #3b2d75;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            justify-content: center;
+            margin-top: 8px;
+            width: 100%;
+        }
+
+        .btn-settings-page:hover {
+            background-color: #27274e;
+            color: #d8b4fe;
+        }
+
+        .btn-logout {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .btn-logout:hover {
+            background-color: #dc2626;
+        }
+
+        .avatar-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(7, 7, 20, 0.85);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body> 
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <div style="font-size: 42px; line-height: 1; margin-bottom: 4px;">
+                <span style="font-family: 'Great Vibes', cursive; background: linear-gradient(135deg, #b91c1c, #ca8a04); -webkit-background-clip: text; -webkit-text-fill-color: transparent; padding-right: 2px;">Leela</span><span style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #ffffff; font-size: 28px; vertical-align: middle;">X</span>
+            </div>
+        </div>
+
+        <a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+        <a href="verify.html"><i class="fa-solid fa-shield-halved"></i> Verify Certificate</a>
+        <a href="Alerts.html"><i class="fa-solid fa-triangle-exclamation"></i> Alerts</a>
+        <a href="Profile.html" class="active"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="About.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+        <a href="Settings.html"><i class="fa-solid fa-circle-info"></i> Settings</a>
+
+        <a href="register.html" style="margin-top: auto; background: rgba(139, 92, 246, 0.1); border: 1px solid #8b5cf6; color: #a78bfa; justify-content: center;"><i class="fa-solid fa-user-plus"></i> Registration Portal</a>
+        <a href="#" onclick="logout()" style="margin-top: 8px; background: #0f0f23; border: 1px solid #ef4444; color: #ef4444; justify-content: center;">Exit System</a>
+    </div>
+
+    <div class="main-container">
+        <div class="main-content">
+            <div class="profile-banner">
+                <div class="avatar-container" onclick="openAvatarModal()">
+                    <div class="avatar-circle" id="bannerAvatar">
+                        <!-- CONVERTED: Offline-friendly Base64 encoded SVG placeholder replacing online i.pravatar.cc source -->
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIkMSIiIHI9IjEyIiBmaWxsPSIjZTJlOGZvIi8+PGNpcmNsZSBjeD0iMTIiIGN5PSI4IiByPSI0IiBmaWxsPSIjOTRhM2I4Ii8+PHBhdGggZD0iTTQgMjBDNCAxNS41ODE3IDcuNTgxNzIgMTIgMTIgMTJDMTYuNDE4MyAxMiAyMCAxNS41ODE3IDIwIDIwIiBzdHJva2U9IiM5NGEzYjgiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+" alt="Profile Picture">
+                    </div>
+                    <div class="avatar-edit-overlay"><i class="fa-solid fa-camera"></i></div>
+                </div>
+                <div class="banner-text">
+                    <h2 id="bannerName">Loading Name...</h2>
+                    <p id="bannerEmail">Loading Email...</p>
+                </div>
+            </div>
+
+            <div class="settings-grid">
+                <div class="card">
+                    <h3 style="font-size: 20px; font-weight: 700; color: #ffffff; margin-bottom: 24px;">Profile Information</h3>
+                    
+                    <div class="info-item" style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Full Name</label>
+                        <p id="profName" style="font-size: 16px; font-weight: 700; color: #ffffff;">Not Registered</p>
+                    </div>
+
+                    <div class="info-item" style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Email</label>
+                        <p id="profEmail" style="font-size: 16px; font-weight: 700; color: #ffffff;">Not Registered</p>
+                    </div>
+
+                    <div class="info-item" style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Contact Phone</label>
+                        <p id="profPhone" style="font-size: 16px; font-weight: 700; color: #ffffff;">No Contact Added</p>
+                    </div>
+
+                    <div class="info-item" style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Workspace Role</label>
+                        <p id="profRole" style="font-size: 16px; font-weight: 700; color: #ffffff;">Global Panel Executive Admin</p>
+                    </div>
+
+                    <div class="info-item" style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; color: #64748b; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Current Tracked Location</label>
+                        <p id="savedLocationDisplay" style="font-size: 16px; font-weight: 700; color: #ffffff;">None Detected</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 style="font-size: 20px; font-weight: 700; color: #ffffff; margin-bottom: 24px;">Configure Profile Parameters</h3>
+                    
+                    <form id="locationForm" style="margin-bottom: 30px;">
+                        <div class="form-group">
+                            <label>Geographic Coordinates</label>
+                            <div class="location-input-wrapper">
+                                <input type="text" id="locationInput" placeholder="Detecting geo parameters...">
+                                <button type="button" class="btn-location-detect" id="gpsTargetBtn"><i class="fa-solid fa-location-crosshairs"></i></button>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-purple">Save Location</button>
+                    </form>
+
+                    <div style="margin-bottom: 30px; border-top: 1px solid var(--border-color); padding-top: 20px;">
+                        <h4 style="font-size: 14px; margin-bottom: 12px; color: var(--text-muted)">Update Password Credentials</h4>
+                        <form id="passwordResetForm">
+                            <div class="form-group"><input type="password" id="newPassword" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color); background:var(--input-bg); color:var(--text-main);" placeholder="New Password" required></div>
+                            <div class="form-group"><input type="password" id="confirmPassword" style="width:100%; padding:10px; border-radius:8px; border:1px solid var(--border-color); background:var(--input-bg); color:var(--text-main);" placeholder="Confirm New Password" required></div>
+                            <button type="submit" class="btn-purple">Update Password</button>
+                        </form>
+                    </div>
+
+                    <div style="margin-bottom: 20px;">
+                        <h4 style="font-size: 14px; margin-bottom: 12px; color: var(--text-muted)">Theme Mode Configuration</h4>
+                        <button class="btn-teal-toggle" id="themeBtn" onclick="toggleThemeButton()">Switch to Light Mode</button>
+                    </div>
+
+                    <div style="border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: 10px;">
+                        <h4 style="font-size: 14px; margin-bottom: 8px; color: var(--text-muted)">System Configurations</h4>
+                        <a href="settings.html" class="btn-settings-page"><i class="fa-solid fa-gear"></i> Open Settings Page</a>
+                    </div>
+                    <button class="btn-logout" onclick="logout()">Logout From System</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="avatarPickerModal" class="avatar-modal">
+        <div style="background: #0f0f23; padding: 24px; border-radius: 12px; width: 90%; max-width: 400px; color: white; border: 1px solid var(--border-color); position: relative; margin: auto;">
+            <span onclick="closeAvatarModal()" style="position: absolute; right: 20px; top: 15px; cursor: pointer; color: #94a3b8; font-size: 24px; font-weight: bold;">&times;</span>
+            <h3 style="margin-top: 0; margin-bottom: 20px; color: #a78bfa;">Update Profile Picture</h3>
+            
+            <div id="cameraStreamContainer" style="display: none; margin-bottom: 15px; text-align: center;">
+                <video id="webcamVideo" style="width: 100%; max-height: 250px; border-radius: 8px; transform: scaleX(-1); background: #070714;" autoplay playsinline></video>
+                <button onclick="captureSnapshot()" style="width: 100%; margin-top: 10px; padding: 12px; background: #8b5cf6; border: none; color: white; border-radius: 8px; font-weight: bold; cursor: pointer;"><i class="fa-solid fa-camera"></i> Capture Photo</button>
+            </div>
+
+            <div id="defaultUploadOptions" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+                <button onclick="startWebcam()" style="width: 100%; padding: 12px; background: #8b5cf6; border: none; color: white; border-radius: 8px; font-weight: bold; cursor: pointer;"><i class="fa-solid fa-camera"></i> Snap Photo</button>
+                <button onclick="document.getElementById('fileAvatarInput').click()" style="width: 100%; padding: 12px; background: #1e1e38; border: 1px solid #3b2d75; color: white; border-radius: 8px; font-weight: bold; cursor: pointer;"><i class="fa-solid fa-upload"></i> Upload Image File</button>
+                <input type="file" id="fileAvatarInput" style="display: none;" accept="image/*" onchange="handleFileSelected(event)">
+                
+                <button id="removeAvatarBtn" onclick="removeProfilePicture()" style="width: 100%; padding: 12px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #ef4444; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;"><i class="fa-solid fa-trash"></i> Remove Profile Picture</button>
+            </div>
+
+            <div style="border-top: 1px solid var(--border-color); padding-top: 15px;">
+                <h4 style="margin-top: 0; margin-bottom: 10px; font-size: 13px; color: #94a3b8;">Choose a System Avatar Character</h4>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: space-between;">
+                    <span onclick="selectEmojiAvatar('👨‍💻')" style="font-size: 28px; cursor: pointer; transition: transform 0.2s;">👨‍💻</span>
+                    <span onclick="selectEmojiAvatar('👩‍💻')" style="font-size: 28px; cursor: pointer; transition: transform 0.2s;">👩‍💻</span>
+                    <span onclick="selectEmojiAvatar('🕵️')" style="font-size: 28px; cursor: pointer; transition: transform 0.2s;">🕵️</span>
+                    <span onclick="selectEmojiAvatar('👤')" style="font-size: 28px; cursor: pointer; transition: transform 0.2s;">👤</span>
+                    <span onclick="selectEmojiAvatar('🦸‍♂️')" style="font-size: 28px; cursor: pointer; transition: transform 0.2s;">🦸‍♂️</span>
+                    <span onclick="selectEmojiAvatar('🦸‍♀️')" style="font-size: 28px; cursor: pointer; transition: transform 0.2s;">🦸‍♀️</span>
+                    <span onclick="selectEmojiAvatar('👨‍🦳')" style="font-size: 28px; cursor: pointer; transition: transform 0.2s;">👨‍🦳</span>
+                    <span onclick="selectEmojiAvatar('👩‍🦳')" style="font-size: 28px; cursor: pointer; transition: transform 0.2s;">👩‍🦳</span>
+                    <span onclick="selectEmojiAvatar('👨', '🦲')" style="font-size: 28px; cursor: pointer; transition: transform 0.2s;">👨‍🦲</span>
+                    <span onclick="selectEmojiAvatar('👩', '🦲')" style="font-size: 28px; pointer: cursor; transition: transform 0.2s;">👩‍🦲</span>
+                    <span onclick="selectEmojiAvatar('🧔')" style="font-size: 28px; cursor: pointer; transition: transform 0.2s;">🧔</span>
+                    <span onclick="selectEmojiAvatar('👶')" style="font-size: 28px; cursor: pointer; transition: transform 0.2s;">👶</span>
+                    <span onclick="selectEmojiAvatar('🧒')" style="font-size: 28px; cursor: pointer; transition: transform 0.2s;">🧒</span>
+                    <span onclick="selectEmojiAvatar('🧑')" style="font-size: 28px; cursor: pointer; transition: transform 0.2s;">🧑</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let streamInstance = null;
+        // CONVERTED: Changed standard fallback target variable to the Base64 placeholder string
+        const DEFAULT_AVATAR = "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIkMSIiIHI9IjEyIiBmaWxsPSIjZTJlOGZvIi8+PGNpcmNsZSBjeD0iMTIiIGN5PSI4IiByPSI0IiBmaWxsPSIjOTRhM2I4Ii8+PHBhdGggZD0iTTQgMjBDNCAxNS41ODE3IDcuNTgxNzIgMTIgMTIgMTJDMTYuNDE4MyAxMiAyMCAxNS41ODE3IDIwIDIwIiBzdHJva2U9IiM5NGEzYjgiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+";
+
+        // Load values on start and keep profile fields in sync
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedName = localStorage.getItem('reg_fullname') || localStorage.getItem('fullName') || "Chaviti Sai Leela";
+            const savedEmail = localStorage.getItem('reg_email') || localStorage.getItem('email') || "admin@leelax.ai";
+            const savedPhone = localStorage.getItem('reg_phone') || localStorage.getItem('phone') || "No Contact Added";
+            const savedRole = localStorage.getItem('reg_role') || localStorage.getItem('role') || "Admin Panel";
+            const savedLocation = localStorage.getItem('user_location') || "";
+
+            // Write them back to local storage explicitly to keep other pages synchronized
+            localStorage.setItem('reg_fullname', savedName);
+            localStorage.setItem('reg_role', savedRole);
+
+            // Set DOM texts
+            document.getElementById('bannerName').innerText = savedName;
+            document.getElementById('profName').innerText = savedName;
+            document.getElementById('bannerEmail').innerText = savedEmail;
+            document.getElementById('profEmail').innerText = savedEmail;
+            document.getElementById('profPhone').innerText = savedPhone;
+            document.getElementById('profRole').innerText = savedRole;
+
+            if (savedLocation) {
+                document.getElementById('savedLocationDisplay').innerText = savedLocation;
+                document.getElementById('locationInput').value = savedLocation;
+            }
+
+            // Apply active avatar picture or character
+            const activeAvatar = localStorage.getItem('user_avatar');
+            if(activeAvatar) {
+                applyAvatarSource(activeAvatar);
+                document.getElementById('removeAvatarBtn').style.display = 'block';
+            } else {
+                applyAvatarSource(DEFAULT_AVATAR);
+                document.getElementById('removeAvatarBtn').style.display = 'none';
+            }
+        });
+
+        function openAvatarModal() {
+            document.getElementById('avatarPickerModal').style.display = 'flex';
+        }
+
+        function closeAvatarModal() {
+            stopWebcamStream();
+            document.getElementById('avatarPickerModal').style.display = 'none';
+        }
+
+        async function startWebcam() {
+            document.getElementById('defaultUploadOptions').style.display = 'none';
+            document.getElementById('cameraStreamContainer').style.display = 'block';
+            try {
+                streamInstance = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
+                document.getElementById('webcamVideo').srcObject = streamInstance;
+            } catch (err) {
+                alert("Camera Access Failure: " + err.message);
+                stopWebcamStream();
+            }
+        }
+
+        function stopWebcamStream() {
+            if (streamInstance) {
+                streamInstance.getTracks().forEach(track => track.stop());
+                streamInstance = null;
+            }
+            document.getElementById('cameraStreamContainer').style.display = 'none';
+            document.getElementById('defaultUploadOptions').style.display = 'flex';
+        }
+
+        function captureSnapshot() {
+            const video = document.getElementById('webcamVideo');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth || 320;
+            canvas.height = video.videoHeight || 240;
+            const ctx = canvas.getContext('2d');
+            
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const base64Url = canvas.toDataURL('image/jpeg');
+            applyAvatarSource(base64Url);
+            localStorage.setItem('user_avatar', base64Url);
+            document.getElementById('removeAvatarBtn').style.display = 'block';
+            closeAvatarModal();
+        }
+
+        function handleFileSelected(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    applyAvatarSource(e.target.result);
+                    localStorage.setItem('user_avatar', e.target.result);
+                    document.getElementById('removeAvatarBtn').style.display = 'block';
+                    closeAvatarModal();
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function selectEmojiAvatar(emoji) {
+            applyAvatarSource(emoji);
+            localStorage.setItem('user_avatar', emoji);
+            document.getElementById('removeAvatarBtn').style.display = 'block';
+            closeAvatarModal();
+        }
+
+        function removeProfilePicture() {
+            if (confirm("Are you sure you want to remove your profile picture?")) {
+                localStorage.removeItem('user_avatar');
+                applyAvatarSource(DEFAULT_AVATAR);
+                document.getElementById('removeAvatarBtn').style.display = 'none';
+                closeAvatarModal();
+                alert("Profile picture removed successfully!");
+            }
+        }
+
+        function applyAvatarSource(src) {
+            const container = document.getElementById('bannerAvatar');
+            if (!src) return;
+            
+            if (src.length <= 4 && !src.startsWith("http") && !src.startsWith("data:")) {
+                container.innerHTML = `<span style="font-size: 38px; line-height: 75px;">${src}</span>`;
+            } else {
+                container.innerHTML = `<img src="${src}" alt="Profile Picture">`;
+            }
+        }
+
+        document.getElementById('locationForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const locationVal = document.getElementById('locationInput').value.trim();
+            if (locationVal) {
+                localStorage.setItem('user_location', locationVal);
+                document.getElementById('savedLocationDisplay').innerText = locationVal;
+                alert("Profile locations successfully updated!");
+            }
+        });
+
+        document.getElementById('gpsTargetBtn').addEventListener('click', () => {
+            if (navigator.geolocation) {
+                document.getElementById('locationInput').placeholder = "Locating coordinates...";
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    const lat = pos.coords.latitude;
+                    const lon = pos.coords.longitude;
+                    document.getElementById('locationInput').placeholder = "Decoding address details...";
+                    try {
+                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&addressdetails=1`, {
+                            headers: { 'Accept-Language': 'en' }
+                        });
+                        const data = await response.json();
+                        if (data && data.display_name) {
+                            document.getElementById('locationInput').value = data.display_name;
+                        } else {
+                            document.getElementById('locationInput').value = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+                        }
+                    } catch (e) {
+                        document.getElementById('locationInput').value = `${lat.toFixed(5)}, ${lon.toFixed(5)}`;
+                    }
+                    document.getElementById('locationInput').placeholder = "Location";
+                }, (err) => {
+                    alert("GPS Signal Detection Error: " + err.message);
+                    document.getElementById('locationInput').placeholder = "Location";
+                });
+            } else {
+                alert("Your browser engine does not support Geolocation tracking.");
+            }
+        });
+        
+        function toggleThemeButton() {
+            const rootEl = document.documentElement;
+            const btn = document.getElementById('themeBtn');
+            if (rootEl.getAttribute('data-theme') === 'dark') {
+                rootEl.removeAttribute('data-theme');
+                btn.textContent = 'Switch to Dark Mode';
+            } else {
+                rootEl.setAttribute('data-theme', 'dark');
+                btn.textContent = 'Switch to Light Mode';
+            }
+        }
+        
+        function logout() {
+            if(confirm("Confirm secure system workspace termination?")) {
+                window.location.href = 'About.html';
+            }
+        }
+
+        window.onclick = function(e) {
+            if (e.target === document.getElementById('avatarPickerModal')) {
+                closeAvatarModal();
+            }
+        };
+    </script>
+</body>
+</html>

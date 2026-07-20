@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Executive Admin Tracking Analytics Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-main: #0f172a;
+            --bg-panel: #1e293b;
+            --border-color: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-blue: #38bdf8;
+            --accent-green: #48bb78;
+            --accent-red: #f56565;
+        }
+
+        body { 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            background: var(--bg-main); 
+            color: var(--text-primary); 
+            margin: 0; 
+            display: flex; 
+            min-height: 100vh; 
+        }
+        
+        .sidebar { 
+            width: 260px; 
+            background: var(--bg-panel); 
+            border-right: 1px solid var(--border-color); 
+            padding: 24px; 
+            display: flex; 
+            flex-direction: column; 
+            box-sizing: border-box; 
+            flex-shrink: 0; 
+        }
+        
+        .sidebar-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .sidebar a { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            color: var(--text-secondary); 
+            text-decoration: none; 
+            padding: 12px 16px; 
+            border-radius: 8px; 
+            margin-bottom: 8px; 
+            font-weight: 600; 
+            font-size: 15px; 
+            transition: 0.2s; 
+        }
+        
+        .sidebar a:hover, .sidebar a.active { 
+            background: rgba(56, 189, 248, 0.15); 
+            color: var(--accent-blue); 
+        }
+        
+        .main-container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            min-width: 0; 
+        }
+        
+        .top-navbar { 
+            height: 70px; 
+            background: var(--bg-panel); 
+            border-bottom: 1px solid var(--border-color); 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 0 40px; 
+            box-sizing: border-box; 
+            position: relative; 
+        }
+
+        .navbar-left-group {
+            display: flex;
+            align-items: center;
+            z-index: 20;
+            position: relative;
+        }
+
+        .date-picker-pill {
+            background: #ffffff;
+            color: #1e293b;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            -webkit-user-select: none;
+            user-select: none;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .date-picker-pill i {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .calendar-dropdown-panel {
+            display: none;
+            position: absolute;
+            top: 45px;
+            left: 0;
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            width: 280px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            padding: 14px;
+            box-sizing: border-box;
+            flex-direction: column;
+        }
+        
+        .calendar-dropdown-panel.show {
+            display: flex;
+        }
+        
+        .calendar-select-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        
+        .calendar-select-row select {
+            background: var(--bg-main);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            outline: none;
+            flex: 1;
+        }
+        
+        .calendar-days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+            text-align: center;
+            font-size: 11px;
+        }
+        
+        .calendar-grid-header {
+            font-weight: 700;
+            color: var(--accent-blue);
+            padding-bottom: 6px;
+        }
+        
+        .calendar-grid-cell {
+            padding: 6px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            color: #cbd5e1;
+            background: var(--bg-main);
+            border: 1px solid rgba(255,255,255,0.02);
+            transition: all 0.15s ease;
+        }
+        
+        .calendar-grid-cell:hover {
+            background: var(--accent-blue);
+            color: var(--bg-main);
+        }
+        
+        .calendar-grid-cell.selected-day {
+            background: var(--accent-blue);
+            color: var(--bg-main);
+            font-weight: bold;
+        }
+
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            z-index: 20;
+        }
+        
+        .user-details {
+            display: flex;
+            flex-direction: column;
+            text-align: right; 
+        }
+        
+        .username {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .role { 
+            font-size: 11px; 
+            color: var(--text-secondary); 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+            white-space: nowrap;
+        }
+        
+        .profile-pic-wrapper {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-blue);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-panel);
+        }
+
+        .search-container {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .main-content { padding: 40px; box-sizing: border-box; overflow-y: auto; display: flex; flex-direction: column; align-items: center; }
+        .content-wrapper { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 30px; }
+        h2 { margin-top: 0; color: white; font-size: 28px; font-weight: 700; margin-bottom: 5px; align-self: flex-start; }
+        
+        .grid-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; width: 100%; }
+        .metric-card { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .metric-card h4 { margin: 0; color: var(--text-secondary); font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .metric-card p { margin: 8px 0 0 0; font-size: 30px; font-weight: 700; color: var(--text-primary); }
+        
+        .charts-row-container { display: flex; flex-direction: row; flex-wrap: wrap; gap: 16px; width: 100%; max-width: 1100px; box-sizing: border-box; }
+        .chart-panel-box { flex: 1; min-width: 280px; background: var(--bg-panel); padding: 16px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.2); box-sizing: border-box; display: flex; flex-direction: column; }
+        .chart-panel-box h3 { color: var(--text-secondary); font-size: 12px; margin-top: 0; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; }
+        .chart-canvas-wrapper { position: relative; height: 155px; width: 100%; }
+
+        .panel-container { background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%; box-sizing: border-box; }
+        
+        .slicer-header-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-bottom: 20px; }
+        .slicer-select-dropdown { background: var(--bg-main); border: 1px solid var(--border-color); color: var(--text-primary); padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 600; outline: none; cursor: pointer; }
+        .slicer-select-dropdown:focus { border-color: var(--accent-blue); }
+
+        .table-responsive-scroll { width: 100%; max-height: 300px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-main); }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 14px 16px; border-bottom: 1px solid var(--border-color); font-size: 15px; }
+        th { background: var(--bg-main); color: var(--text-secondary); font-weight: 600; position: sticky; top: 0; z-index: 10; border-bottom: 2px solid var(--border-color); }
+        tr:hover td { background: #243249; cursor: pointer; }
+
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        .badge.genuine { background: rgba(72, 187, 120, 0.2); color: var(--accent-green); }
+        .badge.fraud { background: rgba(245, 101, 101, 0.2); color: var(--accent-red); }
+
+        /* Actions Button Group Layout */
+        .actions-btn-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        .btn-action {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+        .btn-action:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .btn-action.share:hover {
+            border-color: var(--accent-blue);
+            color: var(--accent-blue);
+            background: rgba(56, 189, 248, 0.1);
+        }
+        .btn-action.delete:hover {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+            background: rgba(245, 101, 101, 0.1);
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <div style="font-size: 42px; line-height: 1; margin-bottom: 4px;">
+                <span style="font-family: 'Great Vibes', cursive; background: linear-gradient(135deg, #b91c1c, #ca8a04); -webkit-background-clip: text; -webkit-text-fill-color: transparent; padding-right: 2px;">Leela</span><span style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #ffffff; font-size: 28px; vertical-align: middle;">X</span>
+            </div>
+        </div>
+
+        <a href="dashboard.html" class="active"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+        <a href="verify.html"><i class="fa-solid fa-shield-halved"></i> Verify Certificate</a>
+        <a href="alerts.html"><i class="fa-solid fa-triangle-exclamation"></i> Alerts</a>
+        <a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="about.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+        <a href="#" onclick="logoutSystem()" style="margin-top: auto; background: var(--bg-panel); border: 1px solid var(--accent-red); color: var(--accent-red); justify-content: center;">Exit System</a>
+    </div>
+
+    <div class="main-container">
+        <header class="top-navbar">
+            <div class="navbar-left-group">
+                <div class="date-picker-pill" id="datePickerPillBtn">
+                    <span id="dateRangeValueLabel">Nov 1, 2020 - Nov 30, 2020</span>
+                    <i class="fa-solid fa-caret-down"></i>
+                </div>
+
+                <div class="calendar-dropdown-panel" id="calendarDropdownPanel">
+                    <div class="calendar-select-row">
+                        <select id="calMonthSelect">
+                            <option value="0">January</option><option value="1">February</option>
+                            <option value="2">March</option><option value="3">April</option>
+                            <option value="4">May</option><option value="5">June</option>
+                            <option value="6">July</option><option value="7">August</option>
+                            <option value="8">September</option><option value="9">October</option>
+                            <option value="10" selected>November</option><option value="11">December</option>
+                        </select>
+                        <select id="calYearSelect">
+                            <option value="2020" selected>2020</option>
+                            <option value="2025">2025</option>
+                            <option value="2026">2026</option>
+                        </select>
+                    </div>
+                    <div class="calendar-days-grid">
+                        <div class="calendar-grid-header">Sun</div><div class="calendar-grid-header">Mon</div>
+                        <div class="calendar-grid-header">Tue</div><div class="calendar-grid-header">Wed</div>
+                        <div class="calendar-grid-header">Thu</div><div class="calendar-grid-header">Fri</div>
+                        <div class="calendar-grid-header">Sat</div>
+                    </div>
+                    <div class="calendar-days-grid" id="calendarGridCellsContainer"></div>
+                </div>
+            </div>
+
+            <div class="search-container">
+                <div style="position: relative; width: 100%;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 15px; top: 12px; color: #64748b; font-size: 14px;"></i>
+                    <input type="text" id="dashboardSearchInput" placeholder="Search parameters index (Filename, ID, Recipient name)..." style="width: 100%; padding: 10px 15px 10px 45px; background: #0f172a; border: 1px solid #1e293b; border-radius: 30px; color: #f8fafc; font-size: 13px; transition: all 0.2s ease-in-out; outline: none;" onfocus="this.style.borderColor='#38bdf8'; this.style.boxShadow='0 0 0 2px rgba(56, 189, 248, 0.2)';" onblur="this.style.borderColor='#1e293b'; this.style.boxShadow='none';" />
+                </div>
+            </div>
+
+            <div class="profile-container" onclick="window.location.href='profile.html'">
+                <div class="user-details">
+                    <span class="username" id="topUserNavName">Loading...</span>
+                    <span class="role" id="topUserNavrole"></span>
+                </div>
+                <div class="profile-pic-wrapper" id="topUserNavPicWrapper">
+                    <img id="topUserNavPic" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTIiIGZpbGw9IiNlMmU4ZjAiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjgiIHI9IjQiIGZpbGw9IiM5NGEzYjgiLz48cGF0aCBkPSJNNCAyMEM0IDE1LjU4MTcgNy41ODE3MiAxMiAxMiAxMkMxNi40MTgzIDEyIDIwIDE1LjU4MTcgMjAgMjAiIHN0cm9rZT0iIzk0YTNiOCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=" style="width: 100%; height: 100%; object-fit: cover;" alt="User Profile">
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <div class="content-wrapper">
+                <h2>System Overview Analytics</h2>
+
+                <div class="grid-metrics">
+                    <div class="metric-card" style="border-left: 5px solid #38bdf8;">
+                        <h4>Total Scanned Assets</h4>
+                        <p id="scannedCount">0</p>
+                    </div>
+                    <div class="metric-card" style="border-left: 5px solid #48bb78;">
+                        <h4>Genuine Clearances</h4>
+                        <p id="genuineCount" style="color: #48bb78;">0</p>
+                    </div>
+                    <div class="metric-card" style="border-left: 5px solid #f56565;">
+                        <h4>Fraud Alerts Flaggings</h4>
+                        <p id="fakeCount" style="color: #f56565;">0</p>
+                    </div>
+                </div>
+
+                <div class="charts-row-container">
+                    <div class="chart-panel-box">
+                        <h3>Scans & Frauds Over Time</h3>
+                        <div class="chart-canvas-wrapper">
+                            <canvas id="scansChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-panel-box">
+                        <h3>Certificate Status</h3>
+                        <div class="chart-canvas-wrapper">
+                            <canvas id="statusChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-container">
+                    <div class="slicer-header-row">
+                        <h3 style="margin: 0; border: none; padding: 0;">Recent Verification Timeline Analysis History</h3>
+                        <div style="display: flex; gap: 10px; align-items: center;">
+                            <select id="docTypeSlicerSelect" class="slicer-select-dropdown" aria-label="Filter records by document type">
+                                <option value="all">All Document Types</option>
+                                <option value="10th Class">10th Class</option>
+                                <option value="+2 / Inter">+2 / Inter</option>
+                                <option value="Graduation">Graduation</option>
+                                <option value="Internships">Internships</option>
+                                <option value="Exams">Exams</option>
+                                <option value="Jobs / Work">Jobs / Work</option>
+                                <option value="Course">Course</option>
+                                <option value="Other">Other</option>
+                                <option value="certificate">Certificate</option>
+                                <option value="aadhaar">Aadhaar Card</option>
+                                <option value="pan">PAN Card</option>
+                                <option value="passport">Passport</option>
+                            </select>
+                            <select id="statusSlicerSelect" class="slicer-select-dropdown" aria-label="Filter records by verdict status">
+                                <option value="all">All Status Verdicts</option>
+                                <option value="genuine">Genuine</option>
+                                <option value="fraud">Fraud</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive-scroll">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Index</th>
+                                    <th>Filename</th>
+                                    <th>Document Type</th>
+                                    <th>Timestamp Date</th>
+                                    <th>Confidence Score</th>
+                                    <th>Verdict Status</th>
+                                    <th>Actions Panel</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentScansTable">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="detailsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: #1e293b; border: 1px solid #334155; width: 90%; max-width: 500px; border-radius: 12px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative;">
+            <span onclick="closeModal()" style="position: absolute; top: 15px; right: 20px; font-size: 24px; font-weight: bold; color: #94a3b8; cursor: pointer;">&times;</span>
+            <h3 style="margin-top: 0; color: white; border-bottom: 1px solid #334155; padding-bottom: 10px; margin-bottom: 20px;">Verification File Inspector</h3>
+            
+            <h4 style="color: #94a3b8; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Extracted Entities</h4>
+            <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px; background: #0f172a; padding: 15px; border-radius: 8px; border: 1px solid #334155; margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 6px;">
+                    <span style="color: #64748b;">Certificate ID:</span>
+                    <span id="modalCertId" style="font-weight: 600;">-</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 6px;">
+                    <span style="color: #64748b;">Recipient Name:</span>
+                    <span id="modalRecipient" style="font-weight: 600;">-</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #1e293b; padding-bottom: 6px;">
+                    <span style="color: #64748b;">Issuing Authority:</span>
+                    <span id="modalIssuer" style="font-weight: 600;">-</span>
+                </div>
+            </div>
+
+            <h4 style="color: #94a3b8; margin-bottom: 10px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;">Analysis Results</h4>
+            <div style="display: flex; flex-direction: column; gap: 12px; font-size: 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; padding-bottom: 8px;">
+                    <span style="color: #94a3b8;">AI Confidence Score:</span>
+                    <span id="modalConfidence" style="font-weight: bold; font-size: 16px;">-</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span style="color: #94a3b8;">System Verdict:</span>
+                    <span id="modalStatus" style="font-weight: bold;">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Default base analytical records structure matrix configuration array
+        const DEFAULT_RECORDS = [
+            { cert_id: "TXN-9021-A8", filename: "academic_degree_v2.pdf", doc_type: "certificate", timestamp: "2020-11-20 14:22:10", confidence: 99.4, status: "genuine", recipient: "Alice Vance", issuer: "State Tech University" },
+            { cert_id: "TXN-1029-B2", filename: "id_scan_passport.jpg", doc_type: "passport", timestamp: "2020-11-19 09:12:45", confidence: 97.2, status: "genuine", recipient: "David Miller", issuer: "Federal Passport Agency" },
+            { cert_id: "TXN-5541-C9", filename: "pan_card_temp.png", doc_type: "pan", timestamp: "2020-11-18 17:40:02", confidence: 32.1, status: "fraud", recipient: "John Smith (Unverified)", issuer: "Income Tax Department" },
+            { cert_id: "TXN-8821-X3", filename: "aadhaar_card_color.pdf", doc_type: "aadhaar", timestamp: "2020-11-15 11:05:30", confidence: 98.9, status: "genuine", recipient: "Priya Sharma", issuer: "UIDAI" }
+        ];
+
+        let scansChartInstance = null;
+        let statusChartInstance = null;
+        let selectedFilterDate = null;
+
+        // Dynamic Profile Synchronization Logic
+        function loadLiveProfileNavbarMetadata() {
+            // Retrieve variables saved from Profile parameter form
+            const liveName = localStorage.getItem('reg_fullname') || localStorage.getItem('fullName') || "Admin Operator";
+            const liveRole = localStorage.getItem('reg_role') || localStorage.getItem('role') || "Global Panel Executive Admin";
+            
+            // CONVERTED: Changed fallback URL value to the base64 SVG string
+            const liveAvatar = localStorage.getItem('user_avatar') || "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTIiIGZpbGw9IiNlMmU4ZjAiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjgiIHI9IjQiIGZpbGw9IiM5NGEzYjgiLz48cGF0aCBkPSJNNCAyMEM0IDE1LjU4MTcgNy41ODE3MiAxMiAxMiAxMkMxNi40MTgzIDEyIDIwIDE1LjU4MTcgMjAgMjAiIHN0cm9rZT0iIzk0YTNiOCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=";
+
+            const nameEl = document.getElementById('topUserNavName');
+            const roleEl = document.getElementById('topUserNavrole');
+            const avatarWrapper = document.getElementById('topUserNavPicWrapper');
+
+            if (nameEl) nameEl.innerText = liveName;
+            if (roleEl) roleEl.innerText = liveRole;
+            
+            if (avatarWrapper) {
+                // If it is an emoji (unicode character), swap the inner HTML dynamically
+                if (liveAvatar.length <= 4 && !liveAvatar.startsWith("http") && !liveAvatar.startsWith("data:")) {
+                    avatarWrapper.innerHTML = `<span style="font-size: 24px; line-height: 40px; text-align: center; display: block; width: 100%;">${liveAvatar}</span>`;
+                } else {
+                    avatarWrapper.innerHTML = `<img id="topUserNavPic" src="${liveAvatar}" style="width: 100%; height: 100%; object-fit: cover;" alt="User Profile">`;
+                }
+            }
+        }
+
+        // Calendar Grid Engine Elements
+        document.getElementById('datePickerPillBtn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('calendarDropdownPanel').classList.toggle('show');
+        });
+
+        function generateCalendarGridCells() {
+            const container = document.getElementById('calendarGridCellsContainer');
+            container.innerHTML = "";
+            const month = parseInt(document.getElementById('calMonthSelect').value);
+            const year = parseInt(document.getElementById('calYearSelect').value);
+
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const totalDaysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Blank filler cells for alignment
+            for (let i = 0; i < firstDayIndex; i++) {
+                const emptyCell = document.createElement('div');
+                container.appendChild(emptyCell);
+            }
+
+            // Month days population loop
+            for (let day = 1; day <= totalDaysInMonth; day++) {
+                const cell = document.createElement('div');
+                cell.className = 'calendar-grid-cell';
+                cell.innerText = day;
+                
+                const paddedMonth = String(month + 1).padStart(2, '0');
+                const paddedDay = String(day).padStart(2, '0');
+                const cellDateString = `${year}-${paddedMonth}-${paddedDay}`;
+
+                if (selectedFilterDate === cellDateString) {
+                    cell.classList.add('selected-day');
+                }
+
+                cell.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    document.querySelectorAll('.calendar-grid-cell').forEach(c => c.classList.remove('selected-day'));
+                    cell.classList.add('selected-day');
+                    
+                    selectedFilterDate = cellDateString;
+                    
+                    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+                    const displayDate = new Date(year, month, day).toLocaleDateString('en-US', options);
+                    document.getElementById('dateRangeValueLabel').innerText = displayDate;
+                    document.getElementById('calendarDropdownPanel').classList.remove('show');
+                    
+                    renderDashboardAnalytics();
+                });
+
+                container.appendChild(cell);
+            }
+        }
+
+        // Event hooks layout configuration routines
+        document.getElementById('calMonthSelect').addEventListener('change', generateCalendarGridCells);
+        document.getElementById('calYearSelect').addEventListener('change', generateCalendarGridCells);
+        document.getElementById('dashboardSearchInput').addEventListener('input', renderDashboardAnalytics);
+        document.getElementById('docTypeSlicerSelect').addEventListener('change', renderDashboardAnalytics);
+        document.getElementById('statusSlicerSelect').addEventListener('change', renderDashboardAnalytics);
+
+        function logoutSystem() {
+            alert("Exiting Framework Admin System Interface Hub.");
+            window.location.href = "About.html";
+        }
+
+        window.onclick = function(e) {
+            if (!document.getElementById('datePickerPillBtn').contains(e.target) && !document.getElementById('calendarDropdownPanel').contains(e.target)) {
+                document.getElementById('calendarDropdownPanel').classList.remove('show');
+            }
+            if (e.target === document.getElementById('detailsModal')) {
+                closeModal();
+            }
+        };
+
+        // Render system analytics dynamic mapping algorithm
+        function renderDashboardAnalytics() {
+            if (!localStorage.getItem('shared_scan_records')) {
+                localStorage.setItem('shared_scan_records', JSON.stringify(DEFAULT_RECORDS));
+            }
+
+            const records = JSON.parse(localStorage.getItem('shared_scan_records'));
+            const totalScanned = records.length;
+            const totalGenuine = records.filter(r => r.status.toLowerCase() === 'genuine').length;
+            const totalFraud = records.filter(r => r.status.toLowerCase() === 'fraud').length;
+
+            document.getElementById('scannedCount').innerText = totalScanned;
+            document.getElementById('genuineCount').innerText = totalGenuine;
+            document.getElementById('fakeCount').innerText = totalFraud;
+
+            const searchVal = document.getElementById('dashboardSearchInput').value.toLowerCase();
+            const docTypeVal = document.getElementById('docTypeSlicerSelect').value;
+            const statusVal = document.getElementById('statusSlicerSelect').value;
+            const tableBody = document.getElementById('recentScansTable');
+            tableBody.innerHTML = "";
+
+            let targetedRows = records.filter(item => {
+                const searchMatches = item.filename.toLowerCase().includes(searchVal) || 
+                                      item.cert_id.toLowerCase().includes(searchVal) || 
+                                      item.recipient.toLowerCase().includes(searchVal);
+                const typeMatches = docTypeVal === 'all' || item.doc_type === docTypeVal;
+                const statusMatches = statusVal === 'all' || item.status === statusVal;
+                
+                let dateMatches = true;
+                if (selectedFilterDate) {
+                    dateMatches = item.timestamp.startsWith(selectedFilterDate);
+                }
+                return searchMatches && typeMatches && statusMatches && dateMatches;
+            });
+
+            if (targetedRows.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-secondary); padding: 30px;">No records match your selected overview matrices filters.</td></tr>`;
+            } else {
+                targetedRows.forEach((row, idx) => {
+                    tableBody.innerHTML += `
+                    <tr onclick="if(!event.target.closest('.btn-action')) openDetailsInspector('${row.cert_id}')">
+                        <td>${idx + 1}</td>
+                        <td style="color: var(--accent-blue); font-weight: 600;">${row.filename}</td>
+                        <td>${row.doc_type}</td>
+                        <td>${row.timestamp}</td>
+                        <td>${row.confidence}%</td>
+                        <td><span class="badge ${row.status.toLowerCase()}">${row.status}</span></td>
+                        <td>
+                            <div class="actions-btn-group">
+                                <button class="btn-action share" onclick="shareRecord('${row.cert_id}', '${row.filename.replace(/'/g, "\\'")}')" title="Share Record"><i class="fa-solid fa-share-nodes"></i></button>
+                                <button class="btn-action delete" onclick="deleteRecord('${row.cert_id}')" title="Delete Record"><i class="fa-solid fa-trash-can"></i></button>
+                            </div>
+                        </td>
+                    </tr>`;
+                });
+            }
+            updateDataVisualizations(totalGenuine, totalFraud);
+        }
+
+        // Action panel behaviors
+        function shareRecord(id, filename) {
+            const shareText = `LeelaX System Verification Audit Record:\nDocument ID: ${id}\nFile Name: ${filename}\nStatus: Audited`;
+            const choice = prompt("Select share channel:\nEnter '1' for WhatsApp\nEnter '2' for Email");
+            if (choice === '1') {
+                window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`, '_blank');
+            } else if (choice === '2') {
+                window.location.href = `mailto:?subject=Audit Verification Record - ${id}&body=${encodeURIComponent(shareText)}`;
+            }
+        }
+
+        function deleteRecord(id) {
+            if (confirm(`Confirm deleting scan record index pointer target [${id}]?`)) {
+                let records = JSON.parse(localStorage.getItem('shared_scan_records')) || [];
+                records = records.filter(r => r.cert_id !== id);
+                localStorage.setItem('shared_scan_records', JSON.stringify(records));
+                renderDashboardAnalytics();
+            }
+        }
+
+        function updateDataVisualizations(genuineCount, fraudCount) {
+            if (scansChartInstance) scansChartInstance.destroy();
+            if (statusChartInstance) statusChartInstance.destroy();
+
+            const ctxLine = document.getElementById('scansChart').getContext('2d');
+            scansChartInstance = new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: ['1st Week', '2nd Week', '3rd Week', 'Current'],
+                    datasets: [
+                        { label: 'Genuine Scans', data: [1, 2, 3, genuineCount], borderColor: '#48bb78', backgroundColor: 'rgba(72,187,120,0.1)', fill: true, tension: 0.3 },
+                        { label: 'Fraud Alerts', data: [0, 1, 1, fraudCount], borderColor: '#f56565', backgroundColor: 'rgba(245,101,101,0.1)', fill: true, tension: 0.3 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(255,255,255,0.05)' } },
+                        x: { grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
+                }
+            });
+
+            const ctxPie = document.getElementById('statusChart').getContext('2d');
+            statusChartInstance = new Chart(ctxPie, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Genuine', 'Fraud'],
+                    datasets: [{ data: [genuineCount, fraudCount], backgroundColor: ['#48bb78', '#f56565'], borderWidth: 0 }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 } } }
+                    }
+                }
+            });
+        }
+
+        function openDetailsInspector(id) {
+            const records = JSON.parse(localStorage.getItem('shared_scan_records')) || [];
+            const targetedNode = records.find(r => r.cert_id === id);
+            if (targetedNode) {
+                document.getElementById('modalCertId').innerText = targetedNode.cert_id;
+                document.getElementById('modalRecipient').innerText = targetedNode.recipient;
+                document.getElementById('modalIssuer').innerText = targetedNode.issuer;
+                document.getElementById('modalConfidence').innerText = `${targetedNode.confidence}%`;
+                
+                const statusBadge = document.getElementById('modalStatus');
+                statusBadge.innerText = targetedNode.status.toUpperCase();
+                statusBadge.className = ""; 
+                statusBadge.style.color = targetedNode.status.toLowerCase() === 'genuine' ? 'var(--accent-green)' : 'var(--accent-red)';
+                
+                document.getElementById('detailsModal').style.display = 'flex';
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('detailsModal').style.display = 'none';
+        }
+
+        // Initialize frame on window load
+        window.onload = function() {
+            loadLiveProfileNavbarMetadata();
+            generateCalendarGridCells();
+            renderDashboardAnalytics();
+        };
+    </script>
+</body>
+</html>

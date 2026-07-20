@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Reset & Cosmic Nebula Background (Matching Image Profile) */
+        body { 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            background: linear-gradient(to bottom, #060214 0%, #0d072b 40%, #1a0b4e 75%, #3e1b75 100%); 
+            color: #f1f5f9; 
+            display: flex; 
+            flex-direction: column;
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 0; 
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* --- DEEP COSMIC SKY BACKGROUND WITH ADVANCED TWINKLING --- */
+        .sky-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Tiny Background Stars */
+        .cosmic-star {
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 50%;
+            animation: cosmicTwinkle var(--duration) ease-in-out infinite alternate;
+        }
+
+        @keyframes cosmicTwinkle {
+            0% { opacity: 0.2; transform: scale(0.7); }
+            100% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 6px #ffffff; }
+        }
+
+        /* Large Glowing Flare Stars from Image */
+        .flare-star {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 20px 8px rgba(168, 85, 247, 0.8), 0 0 40px 15px rgba(255, 255, 255, 0.6);
+            animation: flarePulse var(--duration) ease-in-out infinite alternate;
+        }
+
+        /* Horizontal Flare Line */
+        .flare-star::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: var(--flare-width);
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffffff, transparent);
+        }
+
+        /* Vertical Flare Line */
+        .flare-star::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 2px;
+            height: var(--flare-width);
+            background: linear-gradient(180deg, transparent, #ffffff, transparent);
+        }
+
+        @keyframes flarePulse {
+            0% { opacity: 0.6; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Giant Centered Dark Moon Graphic */
+        .exact-shaded-moon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 850px; 
+            height: 850px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 45% 45%, #130f26 0%, #090617 45%, #04030a 70%, #000000 100%);
+            box-shadow: 
+                0 0 120px 20px rgba(147, 51, 234, 0.15),
+                inset -60px -60px 120px rgba(0, 0, 0, 0.95),
+                inset 30px 30px 70px rgba(255, 255, 255, 0.02);
+            opacity: 0.85;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Center Layout Wrapper */
+        .main-container {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            z-index: 10;
+        }
+
+        /* Frosted Glass Layout Card (Translucent Dark Theme) */
+        .auth-card { 
+            background: rgba(15, 12, 30, 0.75); 
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border-radius: 20px; 
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 4px 20px rgba(0, 0, 0, 0.4); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            padding: 40px; 
+            width: 100%; 
+            max-width: 460px; 
+            box-sizing: border-box; 
+        }
+
+        /* Logo Branding Typography Styles */
+        .card-logo-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .branded-logo-text {
+            font-family: 'Georgia', serif;
+            font-size: 54px;
+            font-style: italic;
+            font-weight: bold;
+            color: #ea580c; /* Deep brand orange */
+            text-shadow: 0 2px 15px rgba(234, 88, 12, 0.5);
+            display: inline-block;
+        }
+
+        .branded-logo-text span {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-style: normal;
+            font-weight: 800;
+            color: #c084fc; /* Light Purple accent matching nebula atmosphere */
+            text-shadow: 0 2px 15px rgba(192, 132, 252, 0.5);
+        }
+
+        h2 { text-align: center; color: #a855f7; margin-top: 0; margin-bottom: 24px; font-size: 24px; font-weight: 700; border-bottom: 2px solid rgba(168, 85, 247, 0.2); padding-bottom: 10px; }
+
+        .form-row { margin-bottom: 18px; }
+        .form-flex-row { display: flex; gap: 16px; margin-bottom: 18px; }
+        .flex-child { flex: 1; }
+        .otp-group { display: flex; gap: 10px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; color: #cbd5e1; font-size: 14px; }
+        
+        input, select { 
+            width: 100%; 
+            padding: 11px 14px; 
+            background: rgba(10, 7, 21, 0.8); 
+            border: 1px solid #4c1d95; 
+            border-radius: 8px; 
+            color: #ffffff; 
+            font-size: 15px; 
+            box-sizing: border-box; 
+            transition: border-color 0.2s, box-shadow 0.2s; 
+        }
+        input:focus, select:focus { border-color: #a855f7; outline: none; box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.3); }
+        
+        .btn-secondary { width: auto; white-space: nowrap; background: #4c1d95; color: white; border: none; border-radius: 8px; font-weight: bold; padding: 0 16px; cursor: pointer; transition: background-color 0.2s; }
+        .btn-secondary:hover { background: #5b21b6; }
+        
+        button[type="submit"] { width: 100%; padding: 12px; background: #7c3aed; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer; transition: background-color 0.2s; margin-top: 10px; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3); }
+        button[type="submit"]:hover { background: #6d28d9; }
+        p { text-align: center; margin-top: 20px; font-size: 14px; color: #94a3b8; }
+        a { color: #a855f7; text-decoration: none; font-weight: 600; }
+        a:hover { text-decoration: underline; }
+
+        .location-input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .btn-location-detect {
+            background-color: #7c3aed;
+            color: white;
+            border: none;
+            width: 44px;
+            height: 41px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: background-color 0.2s;
+        }
+        .btn-location-detect:hover {
+            background-color: #6d28d9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sky-background" id="skyBg">
+        <div class="exact-shaded-moon"></div>
+    </div>
+
+    <main class="main-container">
+        <div class="auth-card">
+            
+            <div class="card-logo-header">
+                <div class="branded-logo-text">Leela<span>X</span></div>
+            </div>
+
+            <h2>Create Account</h2>
+            
+            <form id="regForm">
+                <div class="form-row">
+                    <label>First Name</label>
+                    <input type="text" id="first_name" required>
+                </div>
+                <div class="form-row">
+                    <label>Last Name</label>
+                    <input type="text" id="last_name" required>
+                </div>
+                <div class="form-row">
+                    <label>Email Address</label>
+                    <input type="email" id="email" placeholder="example@gmail.com" required>
+                </div>
+                <div class="form-row">
+                    <label>Phone Number</label>
+                    <div class="otp-group">
+                        <input type="text" id="phone" placeholder="+91 98765 43210" required>
+                        <button type="button" class="btn-secondary" onclick="sendMockOTP()">Send OTP</button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Enter OTP Code</label>
+                    <input type="text" id="otp_input" placeholder="Enter code" required>
+                </div>
+                
+                <div class="form-flex-row">
+                    <div class="flex-child">
+                        <label>Password</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <div class="flex-child">
+                        <label>Confirm Password</label>
+                        <input type="password" id="confirm_password" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label>Location</label>
+                    <div class="location-input-wrapper">
+                        <input type="text" id="location" placeholder="Tirupati, Andhra Pradesh, 517507" required>
+                        <button type="button" class="btn-location-detect" onclick="detectGeoCoordinates()" title="Auto Detect Location">
+                            <i class="fa-solid fa-location-crosshairs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <label>Select Role</label>
+                    <select id="role">
+                        <option value="Admin">System Administrator</option>
+                        <option value="Verifier">User</option>
+                    </select>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+            <p>Already have an account? <a href="login.html">Login here</a></p>
+        </div>
+    </main>
+
+    <script>
+        // Engine to populate high-density twinkling starscape & bright flare stars
+        document.addEventListener('DOMContentLoaded', () => {
+            const skyBg = document.getElementById('skyBg');
+            
+            // Generate standard micro-stars
+            const totalStarsCount = 140; 
+            for (let i = 0; i < totalStarsCount; i++) {
+                const starElement = document.createElement('div');
+                starElement.classList.add('cosmic-star');
+                
+                const dimensionalSize = Math.random() * 2.5 + 1.0; 
+                const coordinateX = Math.random() * 100;
+                const coordinateY = Math.random() * 100;
+                const speedDuration = Math.random() * 2.5 + 1.2; 
+
+                starElement.style.width = `${dimensionalSize}px`;
+                starElement.style.height = `${dimensionalSize}px`;
+                starElement.style.left = `${coordinateX}%`;
+                starElement.style.top = `${coordinateY}%`;
+                starElement.style.setProperty('--duration', `${speedDuration}s`);
+
+                skyBg.appendChild(starElement);
+            }
+
+            // Generate specialized glowing flare cross-stars
+            const totalFlaresCount = 6;
+            for (let i = 0; i < totalFlaresCount; i++) {
+                const flareElement = document.createElement('div');
+                flareElement.classList.add('flare-star');
+                
+                const coordinateX = Math.random() * 90 + 5;
+                const coordinateY = Math.random() * 90 + 5;
+                const speedDuration = Math.random() * 2.0 + 2.0;
+                const flareWidth = Math.floor(Math.random() * 60 + 50) + "px";
+
+                flareElement.style.left = `${coordinateX}%`;
+                flareElement.style.top = `${coordinateY}%`;
+                flareElement.style.setProperty('--duration', `${speedDuration}s`);
+                flareElement.style.setProperty('--flare-width', flareWidth);
+
+                skyBg.appendChild(flareElement);
+            }
+        });
+
+        let currentGeneratedOTP = "";
+
+        function sendMockOTP() {
+            const phone = document.getElementById('phone').value;
+            if (!phone) {
+                alert("Please enter a phone number first.");
+                return;
+            }
+            currentGeneratedOTP = Math.floor(100000 + Math.random() * 900000).toString();
+            alert("Mock OTP Sent successfully to " + phone + "! Use code: " + currentGeneratedOTP);
+            document.getElementById('otp_input').value = currentGeneratedOTP; 
+        }
+
+        function detectGeoCoordinates() {
+            const locationInput = document.getElementById('location');
+            locationInput.placeholder = "Locating address details...";
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+
+                        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data && data.address) {
+                                    const city = data.address.city || data.address.town || data.address.village || "Tirupati";
+                                    const state = data.address.state || "Andhra Pradesh";
+                                    const pincode = data.address.postcode || "517507";
+                                    locationInput.value = `${city}, ${state}, ${pincode}`;
+                                } else {
+                                    locationInput.value = "Tirupati, Andhra Pradesh, 517507";
+                                }
+                            })
+                            .catch(() => {
+                                locationInput.value = "Tirupati, Andhra Pradesh, 517507";
+                            });
+                    },
+                    () => {
+                        alert("Could not detect location coordinates. Using default local region.");
+                        locationInput.value = "Tirupati, Andhra Pradesh, 517507";
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        document.getElementById('regForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const userOtpInput = document.getElementById('otp_input').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+
+            if (userOtpInput !== currentGeneratedOTP || currentGeneratedOTP === "") {
+                alert("Error: Invalid OTP entered. Please send a new OTP and try again.");
+                return;
+            }
+            if (password !== confirmPassword) {
+                alert("Error: Passwords do not match!");
+                return;
+            }
+
+            // Capture actual submitted form values
+            const firstName = document.getElementById('first_name').value.trim();
+            const lastName = document.getElementById('last_name').value.trim();
+            const fullName = firstName + " " + lastName;
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const location = document.getElementById('location').value.trim();
+            
+            const roleElement = document.getElementById('role');
+            const selectedRoleText = roleElement.options[roleElement.selectedIndex].text;
+
+            // Secure them dynamically in localStorage for Profile.html to pick up
+            localStorage.setItem('reg_fullname', fullName);
+            localStorage.setItem('reg_email', email);
+            localStorage.setItem('reg_phone', phone);
+            localStorage.setItem('user_location', location);
+            localStorage.setItem('reg_role', selectedRoleText);
+
+            alert("Registration successful! Redirecting you to the workspace profile panel...");
+            window.location.href = "Profile.html"; 
+        });
+    </script>
+</body>
+</html>

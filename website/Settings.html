@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Settings - LeelaX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Custom Properties for Cosmic Dark & Clean Nebula Switching */
+        :root {
+            --bg-gradient: linear-gradient(to bottom, #f8fafc 0%, #f1f5f9 50%, #e2e8f0 100%);
+            --bg-card: rgba(255, 255, 255, 0.85);
+            --card-border: rgba(0, 0, 0, 0.08);
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #cbd5e1;
+            --input-bg: #ffffff;
+            --accent-purple: #7c3aed;
+            --accent-purple-hover: #6d28d9;
+            --search-bg: #ffffff;
+            --sidebar-bg: #0f0f23;
+            --moon-opacity: 0.04;
+        }
+
+        :root[data-theme="dark"] {
+            --bg-gradient: linear-gradient(to bottom, #060214 0%, #0d072b 40%, #1a0b4e 75%, #3e1b75 100%);
+            --bg-card: rgba(15, 12, 30, 0.75);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #231b42;
+            --input-bg: rgba(7, 7, 20, 0.8);
+            --accent-purple: #8b5cf6;
+            --accent-purple-hover: #7c3aed;
+            --search-bg: rgba(19, 19, 42, 0.6);
+            --sidebar-bg: #0f0f23;
+            --moon-opacity: 0.6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* --- DEEP COSMIC SKY BACKGROUND WITH TWINKLING ENGINE --- */
+        .sky-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .cosmic-star {
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 50%;
+            animation: cosmicTwinkle var(--duration) ease-in-out infinite alternate;
+        }
+
+        @keyframes cosmicTwinkle {
+            0% { opacity: 0.1; transform: scale(0.7); }
+            100% { opacity: 0.9; transform: scale(1.3); box-shadow: 0 0 6px #ffffff; }
+        }
+
+        .flare-star {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 20px 8px rgba(168, 85, 247, 0.6), 0 0 40px 15px rgba(255, 255, 255, 0.4);
+            animation: flarePulse var(--duration) ease-in-out infinite alternate;
+        }
+
+        .flare-star::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: var(--flare-width);
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffffff, transparent);
+        }
+
+        .flare-star::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 2px;
+            height: var(--flare-width);
+            background: linear-gradient(180deg, transparent, #ffffff, transparent);
+        }
+
+        @keyframes flarePulse {
+            0% { opacity: 0.4; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .exact-shaded-moon {
+            position: absolute;
+            top: 35%;
+            left: 75%;
+            transform: translate(-50%, -50%);
+            width: 750px; 
+            height: 750px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 45% 45%, #130f26 0%, #090617 45%, #04030a 70%, #000000 100%);
+            box-shadow: 
+                0 0 120px 20px rgba(147, 51, 234, 0.12),
+                inset -60px -60px 120px rgba(0, 0, 0, 0.95);
+            opacity: var(--moon-opacity);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar { 
+            width: 260px; 
+            background: var(--sidebar-bg); 
+            border-right: 1px solid var(--border-color); 
+            padding: 24px; 
+            display: flex; 
+            flex-direction: column; 
+            box-sizing: border-box; 
+            flex-shrink: 0; 
+            z-index: 15;
+            position: relative;
+        }
+        
+        .sidebar-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .sidebar a { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            color: #94a3b8; 
+            text-decoration: none; 
+            padding: 12px 16px; 
+            border-radius: 8px; 
+            margin-bottom: 8px; 
+            font-weight: 600; 
+            font-size: 15px; 
+        }
+        
+        .sidebar a:hover, .sidebar a.active { 
+            background: rgba(139, 92, 246, 0.15); 
+            color: #a78bfa; 
+        }
+
+        /* --- MAIN VIEWPORT LAYER --- */
+        .main-container { 
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            min-width: 0; 
+            z-index: 10;
+        }
+
+        /* --- SEARCH TOP BAR --- */
+        .top-search-bar {
+            background-color: var(--bg-card);
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 16px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-wrapper {
+            position: relative;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .search-wrapper input {
+            width: 100%;
+            padding: 12px 16px 12px 45px;
+            background-color: var(--search-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 15px;
+            color: var(--text-main);
+            outline: none;
+        }
+
+        .search-wrapper input:focus {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        /* --- SETTINGS CONTENT AREA --- */
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            box-sizing: border-box;
+        }
+
+        .page-header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        /* Frosted Glass Cards */
+        .settings-section {
+            background-color: var(--bg-card);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--accent-purple);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        /* --- FORM GRID & STYLING --- */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        input, select, textarea {
+            padding: 12px 14px;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-size: 15px;
+            outline: none;
+            width: 100%;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.15);
+        }
+
+        /* Toggle Options Row */
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .toggle-row:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-info h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .toggle-info p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Switch UI Toggle button */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+        }
+
+        .switch input { display: none; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px; width: 20px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider { background-color: var(--accent-purple); }
+        input:checked + .slider:before { transform: translateX(22px); }
+
+        /* Document/Link Cards */
+        .doc-link-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            font-weight: 600;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+
+        .doc-link-item:hover {
+            border-color: var(--accent-purple);
+            transform: translateX(4px);
+        }
+
+        .doc-link-item i {
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: color 0.2s;
+        }
+
+        .doc-link-item:hover i {
+            color: var(--accent-purple);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 8px;
+            font-size: 24px;
+            color: #cbd5e1;
+            margin-top: 5px;
+        }
+
+        .star-rating i { cursor: pointer; transition: color 0.2s; }
+        .star-rating i.active { color: #f59e0b; }
+
+        .btn-action {
+            background-color: var(--accent-purple);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: fit-content;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-action:hover { 
+            background-color: var(--accent-purple-hover); 
+            box-shadow: 0 6px 16px rgba(124, 58, 237, 0.35);
+        }
+
+        .btn-logout {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-logout:hover { background-color: #dc2626; }
+    </style>
+</head>
+<body>
+
+    <div class="sky-background" id="skyBg">
+        <div class="exact-shaded-moon"></div>
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <div style="font-size: 42px; line-height: 1; margin-bottom: 4px;">
+                <span style="font-family: 'Great Vibes', cursive; background: linear-gradient(135deg, #b91c1c, #ca8a04); -webkit-background-clip: text; -webkit-text-fill-color: transparent; padding-right: 2px;">Leela</span><span style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #ffffff; font-size: 28px; vertical-align: middle;">X</span>
+            </div>
+        </div>
+        <a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+        <a href="verify.html"><i class="fa-solid fa-shield-halved"></i> Verify Certificate</a>
+        <a href="alerts.html"><i class="fa-solid fa-triangle-exclamation"></i> Alerts</a>
+        <a href="Profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="settings.html" class="active"><i class="fa-solid fa-gear"></i> Settings</a>
+        
+        <a href="register.html" style="margin-top: auto; background: rgba(139, 92, 246, 0.1); border: 1px solid #8b5cf6; color: #a78bfa; justify-content: center;"><i class="fa-solid fa-user-plus"></i> Registration Portal</a>
+    </div>
+
+    <div class="main-container">
+        
+        <div class="top-search-bar">
+            <div class="search-wrapper">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="settingsSearch" placeholder="Search parameters, features or documentation..." onkeyup="filterSettingsSections()">
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="page-header">
+                <h1>Workspace Settings</h1>
+                <p>Manage your account properties, configurations, accessibility metrics, and terms logs.</p>
+            </div>
+
+            <div class="settings-section" data-searchable>
+                <div class="section-title"><i class="fa-solid fa-id-card"></i> Profile Configuration & Registration Identity</div>
+                <form id="profileSettingsForm" onsubmit="saveProfileDetails(event)">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" placeholder="Full legal name">
+                        </div>
+                        <div class="form-group">
+                            <label for="halfName">Half Name (First Name)</label>
+                            <input type="text" id="halfName" placeholder="First or primary identifier" readonly style="opacity: 0.7; cursor: not-allowed;">
+                        </div>
+                        <div class="form-group">
+                            <label for="nickName">Nick Name</label>
+                            <input type="text" id="nickName" placeholder="System display nickname">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="account@domain.org">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="text" id="phone" placeholder="+91 XXXXX XXXXX">
+                        </div>
+                        <div class="form-group">
+                            <label for="role">System Role</label>
+                            <input type="text" id="role" placeholder="Assigned workspace clearance level">
+                        </div>
+                        <div class="form-group">
+                            <label for="company">Company / Organization</label>
+                            <input type="text" id="company" placeholder="LeelaX Global Corporation" value="LeelaX Corporation">
+                        </div>
+                        <div class="form-group full-width" style="margin-top: 8px;">
+                            <button type="submit" class="btn-action">Save Profile Adjustments</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="settings-section" data-searchable>
+                <div class="section-title"><i class="fa-solid fa-key"></i> Passkey Management & Change Password</div>
+                <form id="passwordManagementForm" onsubmit="handlePasswordUpdate(event)">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="currentPass">Current Password</label>
+                            <input type="password" id="currentPass" placeholder="••••••••" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPass">New Password</label>
+                            <input type="password" id="newPass" placeholder="Min 8 characters" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPass">Confirm New Password</label>
+                            <input type="password" id="confirmPass" placeholder="••••••••" required>
+                        </div>
+                        <div class="form-group full-width" style="margin-top: 8px;">
+                            <button type="submit" class="btn-action">Update System Passkey</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="settings-section" data-searchable>
+                <div class="section-title"><i class="fa-solid fa-sliders"></i> Display Preferences & UI Core</div>
+                
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <h4>Dark Theme Environment</h4>
+                        <p>Toggle system interface between high-contrast dark space and classic clean layout scales.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="themeToggleCheckbox" onchange="toggleSystemThemeMode()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="systemLanguageSelect">Default Language Profile</label>
+                    <select id="systemLanguageSelect" onchange="saveLanguagePreference()">
+                        <option value="en">English (Global US)</option>
+                        <option value="te">Telugu (తెలుగు)</option>
+                        <option value="hi">Hindi (हिन्दी)</option>
+                        <option value="es">Spanish (Español)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="settings-section" data-searchable>
+                <div class="section-title"><i class="fa-solid fa-bell"></i> Notification Channels</div>
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <h4>Push Alerts System</h4>
+                        <p>Enable live real-time notifications on your administrative dashboard matrix.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="toggle-row">
+                    <div class="toggle-info">
+                        <h4>Email Summary Dispatches</h4>
+                        <p>Receive transaction records and login logs reports directly via email.</p>
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section" data-searchable>
+                <div class="section-title"><i class="fa-solid fa-comments"></i> Experience Rating & Feedback Channels</div>
+                <div style="margin-bottom: 20px;">
+                    <label>Rate App Version Utility</label>
+                    <div class="star-rating" id="starRatingWrapper">
+                        <i class="fa-solid fa-star" onclick="assignAppRatingMetric(1)"></i>
+                        <i class="fa-solid fa-star" onclick="assignAppRatingMetric(2)"></i>
+                        <i class="fa-solid fa-star" onclick="assignAppRatingMetric(3)"></i>
+                        <i class="fa-solid fa-star" onclick="assignAppRatingMetric(4)"></i>
+                        <i class="fa-solid fa-star" onclick="assignAppRatingMetric(5)"></i>
+                    </div>
+                </div>
+                <form id="feedbackSubmissionForm" onsubmit="handleFeedbackDispatch(event)">
+                    <div class="form-group">
+                        <label for="feedbackMessage">Submit System Feedback / Report Issues</label>
+                        <textarea id="feedbackMessage" rows="3" placeholder="Tell us about your experience or specify adjustments required..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn-action" style="margin-top: 12px;">Transmit Message</button>
+                </form>
+            </div>
+
+            <div class="settings-section" data-searchable>
+                <div class="section-title"><i class="fa-solid fa-book-open"></i> Documentation Logs & Corporate Data</div>
+                
+                <a href="About.html" class="doc-link-item">
+                    <span>About Us</span> <i class="fa-solid fa-angles-right"></i>
+                </a>
+                
+                <a href="#" class="doc-link-item" onclick="triggerLegalModal('Privacy Policy', '• Uploaded document assets are processed dynamically inside isolated client-side sandboxes or memory nodes to maintain maximum data security.\n• Security keys, interface configurations, and user theme preferences are retained strictly within your browser\'s secure local storage.\n• System logs do not distribute, sell, or index user credentials or verified files for third-party analytical parsing.\n• User identity parameters and uploaded document data remain entirely confidential and restricted from external networks.\n• The system utilizes localized validation routines to run compliance checks without exporting records to unauthorized endpoints.\n• Cryptographic tracking parameters are used solely to confirm transaction integrity and are protected against reverse engineering.\n• Session details are terminated immediately upon manual logouts to clear temporary validation cache from memory.\n• Geo-coordinate queries and basic system checks are managed locally to verify operational access limits.\n• Administrative profile updates are synchronized directly within secure infrastructure settings rather than shared databases.\n• All data minimization workflows ensure that layout forensics and scoring metrics remain secure under isolated clearance controls.')">
+                    <span>Privacy Policy</span> <i class="fa-solid fa-angles-right"></i>
+                </a>
+                
+                <a href="#" class="doc-link-item" onclick="triggerLegalModal('Terms & Conditions', '• Users agree to utilize this workspace solely for verifying document identities for which they possess explicit authorized compliance clearances.\n• Automated scoring algorithms provide high-confidence metrics based on layout forensics, but final confirmation remains subject to human operational discretion.\n• Any attempt to inject corrupted blobs, malicious scripts, or reverse-engineer pattern detection parameters will result in immediate API node suspension.\n• Workspace credentials and system access keys must be maintained securely by the assigned user and cannot be transferred to unauthorized personnel.\n• System activity, including access routine timestamps and validation queries, is monitored to maintain the integrity of the administration matrix.\n• Unauthorized tracking, scraping, or automated extraction of layout metrics and validation parameters from the platform is strictly prohibited.\n• The system is provided as an administrative verification utility, and users accept responsibility for actions taken based on generated confidence levels.\n• Modification of default localization files, system language profiles, or secure theme assets must only occur through the official workspace settings panel.\n• Enterprise downtime, manual document override requirements, and platform discrepancies must be reported directly to the engineering desk with an assigned workspace role.\n• Abuse of feedback transmission channels or submission of fraudulent system reports may result in a formal review of terminal instance access privileges.')">
+                    <span>Terms & Conditions</span> <i class="fa-solid fa-angles-right"></i>
+                </a>
+
+                <a href="#" class="doc-link-item" onclick="triggerLegalModal('Contact Support Desk', 'LeelaX System Support Center\n\nSupport Email: support@leelaxai.com\nContact Number: +91 8903611085')">
+                    <span>Contact Support Desk</span> <i class="fa-solid fa-angles-right"></i>
+                </a>
+            </div>
+
+            <button class="btn-logout" onclick="terminateWorkspaceSession()"><i class="fa-solid fa-power-off"></i>Logout</button>
+        </div>
+    </div>
+
+    <script>
+        // High density dynamic background space elements renderer
+        document.addEventListener('DOMContentLoaded', () => {
+            const skyBg = document.getElementById('skyBg');
+            
+            // Render basic field stars
+            const totalStars = 120;
+            for (let i = 0; i < totalStars; i++) {
+                const star = document.createElement('div');
+                star.classList.add('cosmic-star');
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.setProperty('--duration', `${Math.random() * 3 + 1.5}s`);
+                skyBg.appendChild(star);
+            }
+
+            // Render high-glow flare targets
+            const totalFlares = 4;
+            for (let i = 0; i < totalFlares; i++) {
+                const flare = document.createElement('div');
+                flare.classList.add('flare-star');
+                flare.style.left = `${Math.random() * 80 + 10}%`;
+                flare.style.top = `${Math.random() * 80 + 10}%`;
+                flare.style.setProperty('--duration', `${Math.random() * 2 + 2}s`);
+                flare.style.setProperty('--flare-width', `${Math.random() * 40 + 40}px`);
+                skyBg.appendChild(flare);
+            }
+
+            // Bind profile environment from unified workspace profiles
+            const savedName = localStorage.getItem('reg_fullname') || "Chaviti Sai Leela";
+            const savedEmail = localStorage.getItem('reg_email') || "saileela.chaviti@leelax.org";
+            const savedPhone = localStorage.getItem('reg_phone') || "+91 98765 43210";
+            const savedRole = localStorage.getItem('reg_role') || "Global Panel Executive Admin";
+            
+            const savedNick = localStorage.getItem('cfg_nickname') || "Leela Admin";
+            const savedCompany = localStorage.getItem('cfg_company') || "LeelaX Group";
+            const savedLang = localStorage.getItem('cfg_lang') || "en";
+
+            document.getElementById('fullName').value = savedName;
+            document.getElementById('email').value = savedEmail;
+            document.getElementById('phone').value = savedPhone;
+            document.getElementById('role').value = savedRole;
+            document.getElementById('nickName').value = savedNick;
+            document.getElementById('company').value = savedCompany;
+            document.getElementById('systemLanguageSelect').value = savedLang;
+
+            document.getElementById('halfName').value = savedName.split(" ")[0];
+
+            if (localStorage.getItem('theme_preference') === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+                document.getElementById('themeToggleCheckbox').checked = false;
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('themeToggleCheckbox').checked = true;
+            }
+
+            const savedRating = localStorage.getItem('cfg_app_rating');
+            if (savedRating) assignAppRatingMetric(parseInt(savedRating));
+        });
+
+        function saveProfileDetails(e) {
+            e.preventDefault();
+            const fName = document.getElementById('fullName').value.trim();
+            const mail = document.getElementById('email').value.trim();
+            const phoneNum = document.getElementById('phone').value.trim();
+            const currentRole = document.getElementById('role').value.trim();
+            const nName = document.getElementById('nickName').value.trim();
+            const comp = document.getElementById('company').value.trim();
+
+            localStorage.setItem('reg_fullname', fName);
+            localStorage.setItem('reg_email', mail);
+            localStorage.setItem('reg_phone', phoneNum);
+            localStorage.setItem('reg_role', currentRole);
+            localStorage.setItem('cfg_nickname', nName);
+            localStorage.setItem('cfg_company', comp);
+
+            document.getElementById('halfName').value = fName.split(" ")[0];
+            alert("Identity metrics and profile records synchronized successfully!");
+        }
+
+        function filterSettingsSections() {
+            const searchQuery = document.getElementById('settingsSearch').value.toLowerCase();
+            const sections = document.querySelectorAll('[data-searchable]');
+
+            sections.forEach(section => {
+                const innerContentText = section.textContent.toLowerCase();
+                if (innerContentText.includes(searchQuery)) {
+                    section.style.display = "block";
+                } else {
+                    section.style.display = "none";
+                }
+            });
+        }
+
+        function handlePasswordUpdate(e) {
+            e.preventDefault();
+            const newP = document.getElementById('newPass').value;
+            const confP = document.getElementById('confirmPass').value;
+
+            if(newP !== confP) {
+                alert("Synchronization Failure: Confirm Password statement does not match.");
+                return;
+            }
+            alert("Workspace access key structure rewritten successfully!");
+            document.getElementById('passwordManagementForm').reset();
+        }
+
+        function toggleSystemThemeMode() {
+            const isChecked = document.getElementById('themeToggleCheckbox').checked;
+            if (isChecked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme_preference', 'dark');
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme_preference', 'light');
+            }
+        }
+
+        function saveLanguagePreference() {
+            const langValue = document.getElementById('systemLanguageSelect').value;
+            localStorage.setItem('cfg_lang', langValue);
+        }
+
+        function assignAppRatingMetric(starsCount) {
+            localStorage.setItem('cfg_app_rating', starsCount);
+            const elements = document.getElementById('starRatingWrapper').children;
+            for (let i = 0; i < elements.length; i++) {
+                if (i < starsCount) {
+                    elements[i].classList.add('active');
+                } else {
+                    elements[i].classList.remove('active');
+                }
+            }
+        }
+
+        function handleFeedbackDispatch(e) {
+            e.preventDefault();
+            alert("Feedback dispatch successfully transmitted into core administrator system records log.");
+            document.getElementById('feedbackSubmissionForm').reset();
+        }
+
+        function triggerLegalModal(title, textualData) {
+            alert(`--- ${title} ---\n\n${textualData}`);
+        }
+
+        function terminateWorkspaceSession() {
+            if (confirm("Confirm validation statement for terminal instance disconnection?")) {
+                window.location.href = "register.html";
+            }
+        }
+    </script>
+</body>
+</html>

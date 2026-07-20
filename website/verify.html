@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Verify Certificate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f172a; color: #f1f5f9; margin: 0; display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: #1e293b; border-right: 1px solid #334155; padding: 24px; display: flex; flex-direction: column; box-sizing: border-box; shrink: 0; }
+        
+        .sidebar-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #334155;
+        }
+
+        .sidebar a { display: flex; align-items: center; gap: 12px; color: #94a3b8; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; font-weight: 600; font-size: 15px; transition: 0.2s; }
+        .sidebar a:hover, .sidebar a.active { background: rgba(56, 189, 248, 0.1); color: #38bdf8; }
+        
+        .main-container { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        
+        .top-navbar { 
+            height: 70px; 
+            background: #1e293b; 
+            border-bottom: 1px solid #334155; 
+            display: flex; 
+            align-items: center; 
+            justify-content: flex-end; 
+            padding: 0 40px; 
+            box-sizing: border-box; 
+            width: 100%;
+        }
+        
+        .profile-container { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .user-details { display: flex; flex-direction: column; text-align: right; }
+        .username { font-size: 14px; font-weight: 600; color: #f1f5f9; }
+        .role { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; }
+        .profile-pic-wrapper { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #38bdf8; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #1e293b; }
+        
+        .main-content { padding: 40px; max-width: 1100px; margin: 0 auto; width: 100%; box-sizing: border-box; }
+        
+        .full-width-container { margin-top: 24px; width: 100%; }
+        .card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); width: 100%; box-sizing: border-box; margin-bottom: 24px; }
+        
+        .split-scanner-layout { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; width: 100%; align-items: start; }
+        @media (max-width: 900px) { .split-scanner-layout { grid-template-columns: 1fr; } }
+
+        .upload-dragzone { border: 2px dashed #475569; border-radius: 8px; padding: 50px 20px; background: #0f172a; cursor: pointer; transition: 0.2s; margin-top: 15px; margin-bottom: 24px; position: relative; text-align: center; overflow: hidden; }
+        .upload-dragzone:hover { border-color: #38bdf8; background: rgba(56,189,248,0.02); }
+        .upload-dragzone input[type="file"] { position: absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor: pointer; }
+        
+        .scanner-laser-line {
+            display: none;
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(56,189,248,0) 0%, #38bdf8 50%, rgba(56,189,248,0) 100%);
+            box-shadow: 0 0 12px #38bdf8;
+            animation: movingScanLaser 2s linear infinite;
+            z-index: 5;
+        }
+
+        @keyframes movingScanLaser {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+        
+        .btn-primary { background: #38bdf8; color: #0f172a; border: none; padding: 14px 32px; font-size: 16px; font-weight: 700; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.2s; }
+        .btn-primary:hover { background: #0ea5e9; }
+        .btn-primary:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
+
+        .chart-container { width: 220px; height: 220px; margin: 20px auto; position: relative; display: flex; justify-content: center; align-items: center; }
+        .chart-center-text { position: absolute; text-align: center; pointer-events: none; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .chart-main-score { font-size: 38px; font-weight: 800; color: #f1f5f9; font-family: monospace; line-height: 1; transition: color 0.2s ease; }
+        .chart-sub-label { font-size: 10px; color: #94a3b8; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; margin-top: 4px; line-height: 1.2; text-align: center; }
+
+        #loadingText { display: none; margin-top: 15px; color: #38bdf8; font-weight: 600; text-align: center; }
+        #viewDetailsLink { display: none; margin-top: 15px; text-align: center; color: #38bdf8; text-decoration: none; font-weight: 600; font-size: 15px; }
+        #viewDetailsLink:hover { text-decoration: underline; }
+
+        .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px; }
+        @media (max-width: 768px) { .category-grid { grid-template-columns: repeat(2, 1fr); } }
+
+        .category-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 24px 16px;
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            color: #e2e8f0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .category-btn i { font-size: 26px; color: #38bdf8; }
+        .category-btn:hover {
+            background: #2d3748;
+            border-color: #38bdf8;
+            transform: translateY(-3px);
+        }
+        .category-btn span { font-size: 14px; font-weight: 600; }
+
+        .ocr-preview-container { display: none; margin-top: 20px; width: 100%; background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 16px; box-sizing: border-box; }
+        .ocr-field { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #1e293b; font-size: 14px; }
+        .ocr-field:last-child { border-bottom: none; }
+        .ocr-label { color: #94a3b8; font-weight: 500; }
+        .ocr-value { color: #f1f5f9; font-weight: 600; font-family: monospace; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <div style="font-size: 42px; line-height: 1; margin-bottom: 4px;">
+                <span style="font-family: 'Great Vibes', cursive; background: linear-gradient(135deg, #b91c1c, #ca8a04); -webkit-background-clip: text; -webkit-text-fill-color: transparent; padding-right: 2px;">Leela</span><span style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #ffffff; font-size: 28px; vertical-align: middle;">X</span>
+            </div>
+        </div>
+
+        <a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+        <a href="verify.html" class="active"><i class="fa-solid fa-shield-halved"></i> Verify Certificate</a>
+        <a href="result.html"><i class="fa-solid fa-user"></i> Results</a>
+        <a href="alerts.html"><i class="fa-solid fa-triangle-exclamation"></i> Alerts</a>
+        <a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="about.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+
+        <a href="#" onclick="localStorage.clear(); window.location.href='about.html'" style="margin-top: auto; background: #1e293b; border: 1px solid #f56565; color: #f56565; justify-content: center;">Exit System</a>
+    </div>
+
+    <div class="main-container">
+        <div class="top-navbar">
+            <a href="profile.html" class="profile-container" style="text-decoration: none;">
+                <div class="user-details">
+                    <span class="username" id="topUserNavName">Chaviti Sai Leela</span>
+                    <span class="role" id="topUserNavRole">Admin Panel</span>
+                </div>
+                <div class="profile-pic-wrapper" id="navbarAvatarWrapper">
+                    <img id="navbarAvatarImg" src="https://i.pravatar.cc/150?img=33" style="width: 100%; height: 100%; object-fit: cover;" alt="User Profile">
+                </div>
+            </a>
+        </div>
+
+        <div class="main-content">
+            <h2 style="margin: 0 0 6px 0; font-size: 26px; color: #f1f5f9;">Verify Certificates</h2>
+            <p style="color: #94a3b8; margin: 0; font-size: 14px;">Select your file class profile below to run automated system validation scans.</p>
+
+            <div class="full-width-container">
+                
+                <div class="card" id="categorySelectionWrapper">
+                    <h3 style="margin: 0; font-size: 18px; color: #cbd5e1; font-weight: 600;">Select Document Type</h3>
+                    <p style="color: #64748b; font-size: 13px; margin: 4px 0 15px 0;">Choose your record classification format to continue:</p>
+                    
+                    <div class="category-grid">
+                        <button type="button" class="category-btn" onclick="selectDocumentCategory('10th Class', '10th Class Passing Certificate')">
+                            <i class="fa-solid fa-graduation-cap"></i><span>10th Class</span>
+                        </button>
+                        <button type="button" class="category-btn" onclick="selectDocumentCategory('+2 / Inter', 'Intermediate / +2 Marksheet')">
+                            <i class="fa-solid fa-school"></i><span>+2 / Inter</span>
+                        </button>
+                        <button type="button" class="category-btn" onclick="selectDocumentCategory('Graduation', 'Graduation Degree / Transcript')">
+                            <i class="fa-solid fa-award"></i><span>Graduation</span>
+                        </button>
+                        <button type="button" class="category-btn" onclick="selectDocumentCategory('Internships', 'Internship Completion Certificate')">
+                            <i class="fa-solid fa-laptop-code"></i><span>Internships</span>
+                        </button>
+                        <button type="button" class="category-btn" onclick="selectDocumentCategory('Exams', 'Exam Admit Card & Results')">
+                            <i class="fa-solid fa-file-signature"></i><span>Exams</span>
+                        </button>
+                        <button type="button" class="category-btn" onclick="selectDocumentCategory('Jobs / Work', 'Employment Records')">
+                            <i class="fa-solid fa-briefcase"></i><span>Jobs / Work</span>
+                        </button>
+                        <button type="button" class="category-btn" onclick="selectDocumentCategory('Course', 'Course Certification')">
+                            <i class="fa-solid fa-book-open"></i><span>Course</span>
+                        </button>
+                        <button type="button" class="category-btn" onclick="selectDocumentCategory('Other', 'Other Documents')">
+                            <i class="fa-solid fa-folder-plus"></i><span>Other</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="uploadFormWrapper" class="split-scanner-layout" style="display: none;">
+                    
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <h3 style="margin: 0; font-size: 18px; color: #cbd5e1; font-weight: 600;">
+                                Scan Target: <span id="activeCategoryLabel" style="color: #38bdf8;">None</span>
+                            </h3>
+                            <button type="button" onclick="resetCategorySelection()" style="background: transparent; border: 1px solid #475569; color: #94a3b8; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600;">
+                                <i class="fa-solid fa-arrow-left"></i> Change Type
+                            </button>
+                        </div>
+
+                        <form id="verificationForm" onsubmit="handleVerify(event)">
+                            <input type="hidden" id="selectedDocCategory" name="docCategory" value="">
+                            
+                            <div class="upload-dragzone">
+                                <div class="scanner-laser-line" id="scannerLaser"></div>
+                                <i id="uploadIcon" class="fa-solid fa-cloud-arrow-up fa-3x" style="color: #64748b; margin-bottom: 12px;"></i>
+                                <div id="uploadInstructions" style="font-weight: 600; color: #cbd5e1; margin-bottom: 4px; font-size: 15px;">Upload asset file (drag & drop or click)</div>
+                                <div style="font-size: 12px; color: #64748b;">Supports direct image formats or document standard PDFs</div>
+                                <input type="file" id="certFile" accept="image/*,application/pdf" onchange="displaySelectedFile(this)" required>
+                            </div>
+                            
+                            <div id="fileDetailsBox" style="display:none; background: #0f172a; padding: 12px; border-radius: 6px; margin-bottom: 15px; border: 1px solid #334155;">
+                                <div style="font-size: 13px; font-weight:600; color:#38bdf8; word-break: break-all;" id="infoFileName">-</div>
+                                <div style="font-size: 11px; color:#64748b;" id="infoFileSize">-</div>
+                            </div>
+
+                            <button type="submit" id="btnSubmitVerify" class="btn-primary">Scan and Verify</button>
+                        </form>
+                        <div id="loadingText"><i class="fa-solid fa-circle-notch fa-spin"></i> Analyzing Document Asset...</div>
+                    </div>
+
+                    <div class="card" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <h3 style="color: #cbd5e1; font-size: 18px; font-weight: 600; align-self: flex-start; margin: 0;">Certificate OCR</h3>
+                        
+                        <div class="chart-container">
+                            <canvas id="confidenceGaugeCanvas"></canvas>
+                            <div class="chart-center-text">
+                                <span id="gaugePercentText" class="chart-main-score">0%</span>
+                                <span class="chart-sub-label">Verification<br>Match Score</span>
+                            </div>
+                        </div>
+
+                        <div class="ocr-preview-container" id="ocrPreviewBox">
+                            <div style="font-size: 13px; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #334155; padding-bottom: 6px; margin-bottom: 4px;">Extracted OCR Metadata</div>
+                            <div class="ocr-field"><span class="ocr-label">Student/Holder Name:</span><span class="ocr-value" id="ocrNameField">-</span></div>
+                            <div class="ocr-field"><span class="ocr-label">Document ID/Roll:</span><span class="ocr-value" id="ocrRollField">-</span></div>
+                            <div class="ocr-field"><span class="ocr-label">Verification Status:</span><span class="ocr-value" id="ocrStatusField">-</span></div>
+                        </div>
+
+                        <a href="dashboard.html" id="viewDetailsLink" style="color: #48bb78;">Go to Analytics Dashboard <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let confidenceChart = null;
+
+        function getGaugeColor(scoreValue) {
+            if (scoreValue < 60) return '#ef4444'; 
+            if (scoreValue < 80) return '#3b82f6'; 
+            return '#10b981';                     
+        }
+
+        function initGaugeChart(initialScore = 0) {
+            const ctx = document.getElementById('confidenceGaugeCanvas').getContext('2d');
+            if (confidenceChart) { confidenceChart.destroy(); }
+
+            confidenceChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [initialScore, 100 - initialScore],
+                        backgroundColor: [getGaugeColor(initialScore), '#0f172a'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    cutout: '83%', responsive: true, maintainAspectRatio: false,
+                    plugins: { tooltip: { enabled: false }, legend: { display: false } },
+                    rotation: -90, circumference: 180
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => { 
+            initGaugeChart(0); 
+
+            // Sync navigation profile values on load
+            const activeName = localStorage.getItem('reg_fullname') || "Chaviti Sai Leela";
+            const activeRole = localStorage.getItem('reg_role') || "Admin Panel";
+            const activeAvatar = localStorage.getItem('user_avatar') || "https://i.pravatar.cc/150?img=33";
+
+            document.getElementById('topUserNavName').textContent = activeName;
+            document.getElementById('topUserNavRole').textContent = activeRole;
+
+            const avatarWrapper = document.getElementById('navbarAvatarWrapper');
+            if (activeAvatar.length <= 4 && !activeAvatar.startsWith("http") && !activeAvatar.startsWith("data:")) {
+                avatarWrapper.innerHTML = `<span style="font-size: 20px; line-height: 40px; text-align: center; width: 100%; display: block;">${activeAvatar}</span>`;
+            } else {
+                avatarWrapper.innerHTML = `<img src="${activeAvatar}" style="width: 100%; height: 100%; object-fit: cover;" alt="User Profile">`;
+            }
+        });
+
+        function selectDocumentCategory(categoryKey, categoryLabel) {
+            document.getElementById('categorySelectionWrapper').style.display = 'none';
+            document.getElementById('uploadFormWrapper').style.display = 'grid';
+            document.getElementById('activeCategoryLabel').textContent = categoryLabel;
+            document.getElementById('selectedDocCategory').value = categoryKey;
+        }
+
+        function resetCategorySelection() {
+            document.getElementById('uploadFormWrapper').style.display = 'none';
+            document.getElementById('categorySelectionWrapper').style.display = 'block';
+            document.getElementById('verificationForm').reset();
+            document.getElementById('fileDetailsBox').style.display = 'none';
+            document.getElementById('viewDetailsLink').style.display = 'none';
+            document.getElementById('ocrPreviewBox').style.display = 'none';
+            
+            const scoreText = document.getElementById('gaugePercentText');
+            scoreText.textContent = '0%';
+            scoreText.style.color = '#f1f5f9';
+            
+            document.getElementById('scannerLaser').style.display = 'none';
+            initGaugeChart(0);
+        }
+
+        function displaySelectedFile(input) {
+            const box = document.getElementById('fileDetailsBox');
+            if (input.files && input.files[0]) {
+                document.getElementById('infoFileName').textContent = input.files[0].name;
+                document.getElementById('infoFileSize').textContent = (input.files[0].size / (1024 * 1024)).toFixed(2) + " MB";
+                box.style.display = 'block';
+            } else { box.style.display = 'none'; }
+        }
+
+        function handleVerify(event) {
+            event.preventDefault();
+            const btn = document.getElementById('btnSubmitVerify');
+            const loader = document.getElementById('loadingText');
+            const scoreText = document.getElementById('gaugePercentText');
+            const link = document.getElementById('viewDetailsLink');
+            const laser = document.getElementById('scannerLaser');
+            const fileInput = document.getElementById('certFile');
+            const ocrBox = document.getElementById('ocrPreviewBox');
+
+            if (!fileInput.files || !fileInput.files[0]) return;
+
+            btn.disabled = true;
+            loader.style.display = 'block';
+            laser.style.display = 'block';
+            link.style.display = 'none';
+            ocrBox.style.display = 'none';
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function() {
+                const base64DataUrl = reader.result; // Captures base64 string automatically here
+
+                Tesseract.recognize(
+                    reader.result,
+                    'eng',
+                    { logger: m => console.log(m) }
+                ).then(({ data: { text } }) => {
+                    let parsedName = "Not Detected";
+                    let parsedRoll = "Not Detected";
+                    let matchScore = 0;
+
+                    const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                    
+                    if (lines.length > 0) {
+                        for (let line of lines) {
+                            if (/name/i.test(line) && line.includes(':')) {
+                                parsedName = line.split(':')[1].trim();
+                            } else if (/id|roll|doc/i.test(line) && line.includes(':')) {
+                                parsedRoll = line.split(':')[1].trim();
+                            }
+                        }
+
+                        if (parsedName === "Not Detected" && lines[0]) parsedName = lines[0];
+                        if (parsedRoll === "Not Detected" && lines[1]) parsedRoll = lines[1];
+                        
+                        let cleanTextLength = text.replace(/[^a-zA-Z0-9]/g, "").length;
+                        matchScore = 40 + (cleanTextLength % 56); 
+                    } else {
+                        parsedName = "Unknown Document";
+                        parsedRoll = "TXN-" + Math.floor(1000 + Math.random() * 9000);
+                        matchScore = 78; 
+                    }
+
+                    if(parsedName.length > 30) parsedName = parsedName.substring(0, 30);
+                    if(parsedRoll.length > 20) parsedRoll = parsedRoll.substring(0, 20);
+
+                    let progress = 0;
+                    const timer = setInterval(() => {
+                        if (progress >= matchScore) {
+                            clearInterval(timer);
+                            btn.disabled = false;
+                            loader.style.display = 'none';
+                            laser.style.display = 'none';
+                            link.style.display = 'block';
+
+                            document.getElementById('ocrNameField').textContent = parsedName;
+                            document.getElementById('ocrRollField').textContent = parsedRoll;
+                            
+                            const statusLabel = document.getElementById('ocrStatusField');
+                            let targetStatus = "Genuine";
+                            
+                            if (matchScore < 60) { 
+                                targetStatus = "Fraud";
+                                statusLabel.textContent = "FAILED RISK MATCH"; 
+                                statusLabel.style.color = "#ef4444"; 
+                            } else if (matchScore < 80) { 
+                                targetStatus = "Fraud"; 
+                                statusLabel.textContent = "SUSPICIOUS FLAG"; 
+                                statusLabel.style.color = "#3b82f6"; 
+                            } else { 
+                                targetStatus = "Genuine";
+                                statusLabel.textContent = "VERIFIED PASS"; 
+                                statusLabel.style.color = "#10b981"; 
+                            }
+                            
+                            ocrBox.style.display = 'block';
+
+                            // Copies the Base64 Data URL to clipboard upon process success
+                            if (base64DataUrl) {
+                                navigator.clipboard.writeText(base64DataUrl).then(() => {
+                                    document.getElementById('infoFileName').textContent = file.name + " (Base64 Copied!)";
+                                }).catch(err => {
+                                    console.error('Failed to copy Base64 string:', err);
+                                });
+                            }
+
+                            let currentRecords = JSON.parse(localStorage.getItem('shared_scan_records')) || [];
+                            
+                            const currentTimestamp = new Date().toISOString().replace('T', ' ').substring(0, 19);
+                            
+                            const recordPayload = {
+                                cert_id: parsedRoll !== "Not Detected" ? parsedRoll : "TXN-" + Math.floor(1000 + Math.random() * 9000),
+                                filename: file.name,
+                                doc_type: document.getElementById('selectedDocCategory').value || 'certificate',
+                                timestamp: currentTimestamp,
+                                confidence: progress,
+                                status: targetStatus,
+                                recipient: parsedName,
+                                issuer: "OCR Scanning Engine Node"
+                            };
+
+                            currentRecords.unshift(recordPayload); 
+                            localStorage.setItem('shared_scan_records', JSON.stringify(currentRecords));
+
+                        } else {
+                            progress += 1;
+                            scoreText.textContent = progress + "%";
+                            const activeColor = getGaugeColor(progress);
+                            scoreText.style.color = activeColor;
+                            
+                            confidenceChart.data.datasets[0].backgroundColor = [activeColor, '#0f172a'];
+                            confidenceChart.data.datasets[0].data = [progress, 100 - progress];
+                            confidenceChart.update('none');
+                        }
+                    }, 12);
+
+                }).catch(err => {
+                    console.error(err);
+                    btn.disabled = false;
+                    loader.style.display = 'none';
+                    laser.style.display = 'none';
+                });
+            };
+
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+</html>

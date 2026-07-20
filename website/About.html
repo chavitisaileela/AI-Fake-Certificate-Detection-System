@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | LeelaX AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Modern Reset & Clean Typography */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- TOP APPMENU BAR --- */
+        .top-navbar {
+            background-color: #ffffff;
+            height: 70px;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e2e8f0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        /* Rounded 3-line Menu Button Trigger (Left Side) */
+        .menu-toggle-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #475569;
+            font-size: 1.6rem;
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .menu-toggle-btn:hover {
+            background-color: #f1f5f9;
+            color: #0ea5e9;
+        }
+
+        /* --- AUTH NAVIGATION LINKS (Right Side Replacement) --- */
+        .auth-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-signin {
+            text-decoration: none;
+            color: #475569;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-signin:hover {
+            color: #0ea5e9;
+            background-color: #f1f5f9;
+        }
+
+        .btn-register {
+            text-decoration: none;
+            background-color: #0ea5e9;
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 8px 18px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+            transition: all 0.2s;
+        }
+
+        .btn-register:hover {
+            background-color: #0284c7;
+            transform: translateY(-1px);
+        }
+
+        /* --- NEW PROFILE CONTAINER STYLE --- */
+        .user-profile-container {
+            position: relative;
+            display: none; /* Controlled via JS based on Auth state */
+            align-items: center;
+        }
+
+        .profile-img-btn {
+            background: none;
+            border: 2px solid #e2e8f0;
+            padding: 2px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-img-btn:hover {
+            border-color: #0ea5e9;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Optional Dropdown Menu for Profile Actions */
+        .profile-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            width: 150px;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 101;
+        }
+
+        .profile-dropdown.show {
+            display: flex;
+        }
+
+        .dropdown-item {
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            color: #475569;
+            text-decoration: none;
+            transition: background 0.2s;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f1f5f9;
+            color: #0ea5e9;
+        }
+
+        /* --- SLIDEOUT SIDEBAR DRAWER --- */
+        .sidebar-drawer {
+            position: fixed;
+            top: 70px;
+            left: -260px; /* Hidden offscreen natively */
+            width: 260px;
+            height: calc(100vh - 70px);
+            background-color: #0b132b;
+            color: #94a3b8;
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 99;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-right: 1px solid #1c2541;
+            box-shadow: 5px 0 25px rgba(11, 19, 43, 0.15);
+        }
+
+        .sidebar-drawer.open {
+            left: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 18px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            width: 24px;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(56, 189, 248, 0.08);
+            color: #38bdf8;
+        }
+
+        .nav-item.active {
+            background-color: #1c2541;
+            color: #38bdf8;
+        }
+
+       .sidebar-overlay {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(15, 23, 42, 0.3);
+            -webkit-backdrop-filter: blur(2px); /* Add this line to fix the warning */
+            backdrop-filter: blur(2px);
+            z-index: 98;
+            display: none;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        /* --- MAIN PAGE CONTENT LAYOUT --- */
+        .main-content {
+            margin-top: 70px; /* Offset fixed header bar height */
+            flex-grow: 1;
+            width: 100%;
+            transition: padding-left 0.3s ease;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Hero Header Section */
+        .about-hero {
+            background: linear-gradient(135deg, #0b132b 0%, #1c2541 100%);
+            color: white;
+            text-align: center;
+            padding: 70px 20px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(11,19,43,0.05);
+        }
+
+        .about-hero h1 {
+            font-size: 2.6rem;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+            color: #38bdf8;
+        }
+
+        .about-hero p {
+            font-size: 1.15rem;
+            opacity: 0.9;
+            max-width: 680px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        /* Grid Framework */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        @media (max-width: 850px) {
+            .about-grid { grid-template-columns: 1fr; gap: 30px; }
+        }
+
+        .about-text h2 {
+            color: #0b132b;
+            margin-bottom: 18px;
+            font-size: 1.9rem;
+            position: relative;
+        }
+
+        .about-text h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 4px;
+            background: #38bdf8;
+            margin-top: 10px;
+            border-radius: 2px;
+        }
+
+        .about-text p {
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+            color: #475569;
+        }
+
+        /* Pure CSS Custom LeelaX AI Scanner Artwork Graphic */
+        .about-image {
+            width: 100%;
+        }
+
+        .scanner-artwork {
+            width: 100%;
+            max-width: 440px;
+            height: 310px;
+            background-color: #111a2e;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 35px rgba(11, 19, 43, 0.4);
+            border: 1px solid #1e294b;
+            margin: 0 auto;
+        }
+
+        .main-display {
+            width: 90%;
+            height: 80%;
+            background-color: #16223f;
+            border-radius: 8px;
+            border: 1px solid #23335b;
+            position: relative;
+            padding: 40px 20px 20px 20px;
+        }
+
+        .window-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background-color: #0b132b;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            border-bottom: 1px solid #1e294b;
+        }
+
+        .dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+        .dot.red { background-color: #ef4444; }
+        .dot.yellow { background-color: #f59e0b; }
+        .dot.green { background-color: #10b981; }
+
+        .title-text { color: #94a3b8; font-size: 0.75rem; margin-left: 10px; font-weight: 600; }
+
+        .cert-mockup {
+            width: 100%; height: 100%; background: #ffffff;
+            border-radius: 4px; padding: 15px; position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .cert-border {
+            width: 100%; height: 100%; border: 2px solid #cbd5e1;
+            border-radius: 2px; padding: 10px; display: flex;
+            flex-direction: column; align-items: center;
+        }
+
+        .cert-header { font-size: 0.75rem; font-weight: 800; color: #1e293b; margin-bottom: 12px; letter-spacing: 0.5px; }
+
+        .cert-line { height: 4px; background-color: #e2e8f0; border-radius: 2px; margin-bottom: 8px; }
+        .cert-line.long { width: 80%; }
+        .cert-line.mid { width: 50%; }
+
+        .badge-container { margin-top: auto; width: 100%; display: flex; justify-content: flex-end; }
+
+        .ai-badge { display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+        .ai-badge.genuine { background-color: #d1fae5; color: #065f46; border: 1px solid #10b981; }
+        .ai-badge.fraud-alert { position: absolute; top: 50px; left: -15px; background-color: #fee2e2; color: #991b1b; border: 1px solid #ef4444; transform: rotate(-5deg); animation: float 3s ease-in-out infinite; }
+
+        .scan-laser {
+            position: absolute; top: 35px; left: 5%; width: 90%; height: 3px;
+            background: linear-gradient(90deg, rgba(56,189,248,0) 0%, #38bdf8 50%, rgba(56,189,248,0) 100%);
+            box-shadow: 0 0 8px #38bdf8; animation: scan 2.5s linear infinite;
+        }
+
+        @keyframes scan { 0% { top: 35px; } 50% { top: 90%; } 100% { top: 35px; } }
+        @keyframes float { 0% { transform: translateY(0px) rotate(-5deg); } 50% { transform: translateY(-6px) rotate(-5deg); } 100% { transform: translateY(0px) rotate(-5deg); } }
+
+        /* Document Checking Metric Checklist */
+        .verify-list-section {
+            margin-top: 40px; padding: 35px; background: #ffffff;
+            border: 1px solid #e2e8f0; border-radius: 12px; text-align: center;
+        }
+
+        .verify-list-section h3 { font-size: 1.5rem; color: #0b132b; margin-bottom: 25px; }
+
+        .checklist-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 15px; }
+
+        .checklist-item {
+            background: #f8fafc; padding: 18px; border-radius: 8px; font-weight: 600;
+            color: #475569; border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+
+        .checklist-item i { color: #10b981; font-size: 1rem; }
+
+        /* Trust Factors Content Block */
+        .values-section { background-color: #ffffff; margin-top: 40px; padding: 45px 35px; border-radius: 12px; text-align: center; border: 1px solid #e2e8f0; }
+        .values-section h2 { color: #0b132b; font-size: 1.7rem; margin-bottom: 35px; }
+        .values-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        
+        .value-card { background: #f8fafc; padding: 25px; border-radius: 8px; text-align: left; border-top: 4px solid #38bdf8; }
+        .value-card h3 { color: #0b132b; margin-bottom: 10px; font-size: 1.2rem; }
+        .value-card p { color: #475569; font-size: 0.95rem; }
+
+        /* Launch CTAs Button Footer Section */
+        .cta-section { text-align: center; margin-top: 40px; padding: 45px 20px; background: linear-gradient(135deg, #1c2541 0%, #0b132b 100%); border-radius: 12px; color: white; }
+        .cta-section h2 { font-size: 1.5rem; margin-bottom: 8px; }
+        .cta-section p { color: #94a3b8; margin-bottom: 20px; }
+        
+        .cta-btn {
+            display: inline-block; background-color: #38bdf8; color: #0b132b; padding: 12px 30px;
+            text-decoration: none; border-radius: 30px; font-weight: 700; transition: transform 0.2s;
+        }
+        .cta-btn:hover { background-color: #0ea5e9; color: white; transform: scale(1.02); }
+
+        /* --- NEW SUBSCRIPTION PLAN SECTION --- */
+        .pricing-section {
+            margin-top: 40px;
+            padding: 45px 35px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .pricing-section h2 {
+            color: #0b132b;
+            font-size: 1.7rem;
+            margin-bottom: 10px;
+        }
+
+        .pricing-section p.section-desc {
+            color: #64748b;
+            font-size: 1rem;
+            margin-bottom: 35px;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .price-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .price-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+
+        .price-card.popular {
+            border: 2px solid #38bdf8;
+            background: #ffffff;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #38bdf8;
+            color: #0b132b;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .price-card h3 {
+            color: #0b132b;
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .price-amount {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 15px;
+        }
+
+        .price-amount span {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .price-features {
+            list-style: none;
+            margin-bottom: 25px;
+            text-align: left;
+            padding: 0 15px;
+        }
+
+        .price-features li {
+            font-size: 0.95rem;
+            color: #475569;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .price-features li i {
+            color: #10b981;
+        }
+
+        .price-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 0;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .price-btn.secondary {
+            background-color: #cbd5e1;
+            color: #333;
+        }
+
+        .price-btn.secondary:hover {
+            background-color: #94a3b8;
+        }
+
+        .price-btn.primary {
+            background-color: #0ea5e9;
+            color: white;
+        }
+
+        .price-btn.primary:hover {
+            background-color: #0284c7;
+        }
+
+        /* --- NEW CONTACT DETAILS SECTION --- */
+        .contact-section {
+            margin-top: 40px;
+            padding: 45px 35px;
+            background-color: #0b132b;
+            color: #94a3b8;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .contact-section h2 {
+            color: #ffffff;
+            font-size: 1.7rem;
+            margin-bottom: 15px;
+        }
+
+        .contact-section p.contact-intro {
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            font-size: 0.95rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .contact-card {
+            background: rgba(28, 37, 65, 0.4);
+            border: 1px solid #1c2541;
+            padding: 20px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .contact-card:hover {
+            background: rgba(28, 37, 65, 0.7);
+        }
+
+        .contact-card i {
+            font-size: 1.5rem;
+            color: #38bdf8;
+            margin-bottom: 12px;
+        }
+
+        .contact-card h4 {
+            color: #ffffff;
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+        }
+
+        .contact-card p {
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-navbar">
+        <button class="menu-toggle-btn" id="menuBtn" aria-label="Toggle navigation drawer">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </button>
+
+        <div class="auth-actions">
+            <a href="login.html" class="btn-signin" id="signInBtn">Sign In</a>
+            <a href="register.html" class="btn-register" id="registerBtn">Register</a>
+
+            <div class="user-profile-container" id="userProfileContainer">
+                <button class="profile-img-btn" id="profileDropdownTrigger">
+                    <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='12' cy='12' r='12' fill='%23e2e8f0'/><circle cx='12' cy='8' r='4' fill='%2394a3b8'/><path d='M4 20C4 15.5817 7.58172 12 12 12C16.4183 12 20 15.5817 20 20' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round'/></svg>" alt="Profile Photo" class="profile-pic" id="userProfilePic">
+                </button>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="profile.html" class="dropdown-item">My Profile</a>
+                    <button class="dropdown-item" id="logoutBtn">Log Out</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <nav class="sidebar-drawer" id="sidebarDrawer">
+        <a href="trail.html" class="nav-item">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Try Free Trial
+        </a>
+        <a href="About.html" class="nav-item active">
+            <i class="fa-solid fa-circle-info"></i> About Us
+        </a>
+    </nav>
+
+    <div class="main-content">
+        <main class="container">
+            
+            <section class="about-hero">
+                <h1>About LeelaX AI</h1>
+                <p>Securing credential integrity with automated optical forensics and deep learning document verification.</p>
+            </section>
+            
+            <section class="about-grid">
+                <div class="about-text">
+                    <h2>Our Mission</h2>
+                    <p>In an increasingly digital academic and professional landscape, document forgery has become more sophisticated than ever. Welcome to <strong>LeelaX AI</strong>, an advanced AI-driven verification engine built to validate credentials instantly.</p>
+                    <p>We specialized in automated document screening. By running uploaded assets through layout analysis, optical character checking, and pattern recognition models, LeelaX AI accurately diagnoses structural elements to confirm whether they are genuine or fraudulent.</p>
+                    <p>Instead of manual verification, our system calculates a precise <strong>authenticity percentage score</strong>, providing organizations, HR structures, and academic institutions with a definitive metric on credential reliability.</p>
+                </div>
+                
+                <div class="about-image">
+                    <div class="scanner-artwork">
+                        <div class="main-display">
+                            <div class="window-header">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                                <span class="title-text">LeelaX AI - Verification Engine</span>
+                            </div>
+                            
+                            <div class="cert-mockup">
+                                <div class="cert-border">
+                                    <div class="cert-header">CERTIFICATE OF COMPLETION</div>
+                                    <div class="cert-line long"></div>
+                                    <div class="cert-line mid"></div>
+                                    <div class="badge-container">
+                                        <div class="ai-badge genuine">
+                                            <i class="fa-solid fa-circle-check"></i>
+                                            <span>GENUINE 98%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="ai-badge fraud-alert">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                <span>FRAUD DETECTED</span>
+                            </div>
+                            
+                            <div class="scan-laser"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="verify-list-section">
+                <h3>Documents We Verify Instantly</h3>
+                <div class="checklist-grid">
+                    <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> 10th Class Certificates</div>
+                    <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Intermediate (12th) Certificates</div>
+                    <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Internship Certificates</div>
+                    <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Course & Training Certificates</div>
+                    <div class="checklist-item"><i class="fa-solid fa-circle-check"></i> Other</div>
+                </div>
+            </section>
+
+            <section class="values-section">
+                <h2>Why Trust LeelaX AI?</h2>
+                <div class="values-grid">
+                    <div class="value-card">
+                        <h3>Percentage-Based Accuracy</h3>
+                        <p>We don't guess. Our AI checks fonts, stamps, alignments, and metadata properties to deliver an exact reliability metric showing how genuine a file is.</p>
+                    </div>
+                    <div class="value-card">
+                        <h3>Comprehensive Formats</h3>
+                        <p>From high school certifications and graduation degrees to internship documents and workspace records, our AI classifies formats instantly.</p>
+                    </div>
+                    <div class="value-card">
+                        <h3>Fraud Mitigation</h3>
+                        <p>We actively train our models against new forgery trends, fake layouts, and digital generators to keep background assessments solid.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="pricing-section">
+                <h2>Subscription Plans</h2>
+                <p class="section-desc">Choose the perfect clearance level for your document validation needs.</p>
+                <div class="pricing-grid">
+                    <div class="price-card">
+                        <h3>Basic Plan</h3>
+                        <div class="price-amount">$0 <span>/ month</span></div>
+                        <ul class="price-features">
+                            <li><i class="fa-solid fa-check"></i> 5 Document Scans / Month</li>
+                            <li><i class="fa-solid fa-check"></i> Standard Verification Flow</li>
+                            <li><i class="fa-solid fa-check"></i> Basic Percentage Score</li>
+                        </ul>
+                        <a href="trail.html" class="price-btn secondary">Get Started</a>
+                    </div>
+                    <div class="price-card popular">
+                        <div class="popular-badge">Most Popular</div>
+                        <h3>Enterprise Pro</h3>
+                        <div class="price-amount">$49 <span>/ month</span></div>
+                        <ul class="price-features">
+                            <li><i class="fa-solid fa-check"></i> Unlimited Document Scans</li>
+                            <li><i class="fa-solid fa-check"></i> Optical Character Forensics</li>
+                            <li><i class="fa-solid fa-check"></i> Advanced Layout Diagnosis</li>
+                            <li><i class="fa-solid fa-check"></i> Priority API Server Access</li>
+                        </ul>
+                        <a href="register.html" class="price-btn primary">Upgrade Now</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta-section">
+                <h2>Ready to Verify a Document?</h2>
+                <p>Upload your file to generate an instant authenticity analysis report with percentage scoring metrics.</p>
+                <a href="trail.html" class="cta-btn">Free Trial</a>
+            </section>
+
+            <section class="contact-section">
+                <h2>Contact Information</h2>
+                <p class="contact-intro">Have questions regarding structural alignment checks or customized APIs? Connect with our verification team.</p>
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <i class="fa-solid fa-envelope"></i>
+                        <h4>Support Email</h4>
+                        <p>support@leelaxai.com</p>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fa-solid fa-building"></i>
+                        <h4>Corporate Office</h4>
+                        <p>Tirupati, Andhra Pradesh, India</p>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fa-solid fa-headset"></i>
+                        <h4>Helpline Hours</h4>
+                        <p>Mon - Fri: 9 AM - 6 PM</p>
+                    </div>
+                    <div class="contact-card">
+                        <i class="fa-solid fa-building"></i>
+                        <h4>Contact Number</h4>
+                        <p>+91 8903611085</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebarDrawer = document.getElementById('sidebarDrawer');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        // Drawer Menu Open/Close Toggles
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebarDrawer.classList.toggle('open');
+            sidebarOverlay.classList.toggle('show');
+        });
+
+        // Click on background overlay to close drawer
+        sidebarOverlay.addEventListener('click', () => {
+            sidebarDrawer.classList.remove('open');
+            sidebarOverlay.classList.remove('show');
+        });
+
+        // Global layout events to dismiss menus instantly on out-clicks
+        document.addEventListener('click', (e) => {
+            if (!sidebarDrawer.contains(e.target) && e.target !== menuBtn) {
+                sidebarDrawer.classList.remove('open');
+                sidebarOverlay.classList.remove('show');
+            }
+        });
+
+        /* --- LOGIC FOR HANDING LOGGED IN USER --- */
+        
+        // Element Grabbers
+        const signInBtn = document.getElementById('signInBtn');
+        const registerBtn = document.getElementById('registerBtn');
+        const userProfileContainer = document.getElementById('userProfileContainer');
+        const profileDropdownTrigger = document.getElementById('profileDropdownTrigger');
+        const profileDropdown = document.getElementById('profileDropdown');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        // Function to check authentication state and configure top-right nav
+        function checkAuthStatus() {
+            // Check if there is user session info stored in localStorage (or check cookie/backend)
+            const userToken = localStorage.getItem('user_authenticated'); 
+            const userPhoto = localStorage.getItem('user_photo');
+
+            if (userToken === 'true') {
+                // User is authenticated: Hide the Sign In and Register Buttons
+                signInBtn.style.display = 'none';
+                registerBtn.style.display = 'none';
+
+                // Display the User Profile Container
+                userProfileContainer.style.display = 'flex';
+
+                // Update photo if specific photo URL is available in session
+                if (userPhoto) {
+                    document.getElementById('userProfilePic').src = userPhoto;
+                }
+            } else {
+                // Guest state: Show Auth Buttons, Hide Profile
+                signInBtn.style.display = 'inline-block';
+                registerBtn.style.display = 'inline-block';
+                userProfileContainer.style.display = 'none';
+            }
+        }
+
+        // Toggle drop down menu on profile photo click
+        profileDropdownTrigger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            profileDropdown.classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userProfileContainer.contains(e.target)) {
+                profileDropdown.classList.remove('show');
+            }
+        });
+
+        // Handle Logout Action
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('user_authenticated');
+            localStorage.removeItem('user_photo');
+            checkAuthStatus(); // Refresh Layout instantly
+        });
+
+        // Initial setup on page load
+        checkAuthStatus();
+        
+        /* Tip: To simulate being logged-in in your developer console, run:
+           localStorage.setItem('user_authenticated', 'true');
+           And reload the page!
+        */
+    </script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Results - Certificate Check Report</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Base Reset & Cosmic Nebula Background */
+        body { 
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            background: linear-gradient(to bottom, #060214 0%, #0d072b 40%, #1a0b4e 75%, #3e1b75 100%); 
+            color: #f1f5f9; 
+            display: flex; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 0; 
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* --- DEEP COSMIC SKY BACKGROUND WITH ADVANCED TWINKLING --- */
+        .sky-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Tiny Background Stars */
+        .cosmic-star {
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 50%;
+            animation: cosmicTwinkle var(--duration) ease-in-out infinite alternate;
+        }
+
+        @keyframes cosmicTwinkle {
+            0% { opacity: 0.2; transform: scale(0.7); }
+            100% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 6px #ffffff; }
+        }
+
+        /* Large Glowing Flare Stars */
+        .flare-star {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 0 20px 8px rgba(168, 85, 247, 0.8), 0 0 40px 15px rgba(255, 255, 255, 0.6);
+            animation: flarePulse var(--duration) ease-in-out infinite alternate;
+        }
+
+        .flare-star::before {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: var(--flare-width);
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffffff, transparent);
+        }
+
+        .flare-star::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 2px;
+            height: var(--flare-width);
+            background: linear-gradient(180deg, transparent, #ffffff, transparent);
+        }
+
+        @keyframes flarePulse {
+            0% { opacity: 0.6; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Giant Centered Dark Moon Graphic */
+        .exact-shaded-moon {
+            position: absolute;
+            top: 50%;
+            left: 70%;
+            transform: translate(-50%, -50%);
+            width: 850px; 
+            height: 850px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 45% 45%, #130f26 0%, #090617 45%, #04030a 70%, #000000 100%);
+            box-shadow: 
+                0 0 120px 20px rgba(147, 51, 234, 0.15),
+                inset -60px -60px 120px rgba(0, 0, 0, 0.95),
+                inset 30px 30px 70px rgba(255, 255, 255, 0.02);
+            opacity: 0.6;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Unified Workspace Layout Sidebar */
+        .sidebar { 
+            width: 260px; 
+            background: #0f0f23; 
+            border-right: 1px solid #231b42; 
+            padding: 24px; 
+            display: flex; 
+            flex-direction: column; 
+            box-sizing: border-box; 
+            flex-shrink: 0; 
+            z-index: 15;
+            position: relative;
+        }
+        
+        .sidebar-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #231b42;
+        }
+
+        .sidebar a { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            color: #94a3b8; 
+            text-decoration: none; 
+            padding: 12px 16px; 
+            border-radius: 8px; 
+            margin-bottom: 8px; 
+            font-weight: 600; 
+            font-size: 15px; 
+        }
+        
+        .sidebar a:hover, .sidebar a.active { 
+            background: rgba(139, 92, 246, 0.15); 
+            color: #a78bfa; 
+        }
+
+        /* Center Content Container wrapper */
+        .main-container {
+            flex: 1; 
+            display: flex; 
+            flex-direction: column; 
+            min-width: 0;
+            z-index: 10;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            box-sizing: border-box;
+        }
+
+        /* Frosted Glass Layout Card (Translucent Dark Theme) */
+        .result-card { 
+            background: rgba(15, 12, 30, 0.75); 
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
+            border-radius: 20px; 
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 4px 20px rgba(0, 0, 0, 0.4); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            padding: 40px; 
+            width: 100%; 
+            box-sizing: border-box; 
+        }
+
+        h2 { color: #c084fc; margin-top: 0; font-size: 26px; font-weight: 700; border-bottom: 2px solid rgba(168, 85, 247, 0.2); padding-bottom: 12px; margin-bottom: 24px; }
+        
+        .status-box { padding: 16px 20px; border-radius: 10px; font-weight: 700; font-size: 18px; margin-bottom: 20px; border-left: 6px solid; letter-spacing: 0.5px; }
+        .fraud { background: rgba(69, 26, 3, 0.7); color: #f87171; border-left-color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
+        .genuine { background: rgba(6, 78, 59, 0.7); color: #4ade80; border-left-color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.2); }
+        
+        .score { font-size: 17px; margin-bottom: 24px; color: #38bdf8; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        h3 { color: #94a3b8; font-size: 13px; text-transform: uppercase; margin-bottom: 12px; font-weight: 700; letter-spacing: 0.5px; }
+        
+        .text-box { background: rgba(7, 7, 20, 0.8); border: 1px solid #4c1d95; padding: 20px; border-radius: 10px; font-family: 'Courier New', monospace; font-size: 14px; color: #cbd5e1; white-space: pre-wrap; line-height: 1.6; max-height: 250px; overflow-y: auto; }
+        
+        .footer-text { font-size: 13px; color: #94a3b8; margin-top: 30px; border-top: 1px solid rgba(168, 85, 247, 0.2); padding-top: 20px; line-height: 1.5; }
+        
+        .btn-action-panel { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: #7c3aed; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; text-decoration: none; margin-top: 24px; cursor: pointer; transition: background-color 0.2s, box-shadow 0.2s; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3); }
+        .btn-action-panel:hover { background: #6d28d9; box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4); }
+    </style>
+</head>
+<body>
+
+    <div class="sky-background" id="skyBg">
+        <div class="exact-shaded-moon"></div>
+    </div>
+
+    <!-- Layout Sidebar Navigation Setup -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <div style="font-size: 42px; line-height: 1; margin-bottom: 4px;">
+                <span style="font-family: 'Great Vibes', cursive; background: linear-gradient(135deg, #b91c1c, #ca8a04); -webkit-background-clip: text; -webkit-text-fill-color: transparent; padding-right: 2px;">Leela</span><span style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #ffffff; font-size: 28px; vertical-align: middle;">X</span>
+            </div>
+        </div>
+
+        <a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+        <a href="verify.html" class="active"><i class="fa-solid fa-shield-halved"></i> Verify Certificate</a>
+        <a href="Alerts.html"><i class="fa-solid fa-triangle-exclamation"></i> Alerts</a>
+        <a href="Profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="About.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+
+        <a href="register.html" style="margin-top: auto; background: rgba(139, 92, 246, 0.1); border: 1px solid #8b5cf6; color: #a78bfa; justify-content: center;"><i class="fa-solid fa-user-plus"></i> Registration Portal</a>
+    </div>
+
+    <main class="main-container">
+        <div class="main-content">
+            <div class="result-card">
+                <h2>Certificate Check Report</h2>
+                
+                <div id="statusBox" class="status-box">
+                    Processing layout verification checks...
+                </div>
+
+                <div id="matchScore" class="score">
+                    <i class="fa-solid fa-gauge-high"></i> Match Confidence Score: --
+                </div>
+
+                <h3>Text Decoded on Certificate:</h3>
+                <div id="extractedText" class="text-box">Reading document text layers...</div>
+
+                <div id="footerInfo" class="footer-text">
+                    Loading telemetry logs...
+                </div>
+
+                <a href="verify.html" class="btn-action-panel"><i class="fa-solid fa-arrow-left"></i> Scan Another Document</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Engine to populate high-density twinkling starscape & bright flare stars
+        document.addEventListener('DOMContentLoaded', () => {
+            const skyBg = document.getElementById('skyBg');
+            
+            // Generate standard micro-stars
+            const totalStarsCount = 140; 
+            for (let i = 0; i < totalStarsCount; i++) {
+                const starElement = document.createElement('div');
+                starElement.classList.add('cosmic-star');
+                
+                const dimensionalSize = Math.random() * 2.5 + 1.0; 
+                const coordinateX = Math.random() * 100;
+                const coordinateY = Math.random() * 100;
+                const speedDuration = Math.random() * 2.5 + 1.2; 
+
+                starElement.style.width = `${dimensionalSize}px`;
+                starElement.style.height = `${dimensionalSize}px`;
+                starElement.style.left = `${coordinateX}%`;
+                starElement.style.top = `${coordinateY}%`;
+                starElement.style.setProperty('--duration', `${speedDuration}s`);
+
+                skyBg.appendChild(starElement);
+            }
+
+            // Generate specialized glowing flare cross-stars
+            const totalFlaresCount = 5;
+            for (let i = 0; i < totalFlaresCount; i++) {
+                const flareElement = document.createElement('div');
+                flareElement.classList.add('flare-star');
+                
+                const coordinateX = Math.random() * 80 + 10;
+                const coordinateY = Math.random() * 90 + 5;
+                const speedDuration = Math.random() * 2.0 + 2.0;
+                const flareWidth = Math.floor(Math.random() * 60 + 50) + "px";
+
+                flareElement.style.left = `${coordinateX}%`;
+                flareElement.style.top = `${coordinateY}%`;
+                flareElement.style.setProperty('--duration', `${speedDuration}s`);
+                flareElement.style.setProperty('--flare-width', flareWidth);
+
+                skyBg.appendChild(flareElement);
+            }
+        });
+
+        // Load and map dynamic scanner storage payloads
+        const resultData = JSON.parse(localStorage.getItem('lastScanResult')) || {
+            status: 'FRAUD',
+            score: 0,
+            text: "OCR System Alert: No readable layout data detected. Please check server connections.",
+            time: new Date().toLocaleString()
+        };
+
+        const statusBox = document.getElementById('statusBox');
+        const matchScore = document.getElementById('matchScore');
+        const extractedText = document.getElementById('extractedText');
+        const footerInfo = document.getElementById('footerInfo');
+
+        matchScore.innerHTML = `<i class="fa-solid fa-gauge-high"></i> Match Confidence Score: <strong>${resultData.score}%</strong>`;
+        extractedText.innerText = resultData.text;
+
+        if (resultData.status === 'GENUINE') {
+            statusBox.className = "status-box genuine";
+            statusBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> RESULT: GENUINE CLEARANCE`;
+            footerInfo.innerHTML = `<i class="fa-solid fa-clock"></i> Verified on: ${resultData.time}<br><i class="fa-solid fa-circle-info"></i> Reason: Secure verification successful. Record parameters match structural hash registries.`;
+        } else {
+            statusBox.className = "status-box fraud";
+            statusBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> RESULT: FRAUD ALERT FLAGGED`;
+            footerInfo.innerHTML = `<i class="fa-solid fa-clock"></i> Verified on: ${resultData.time}<br><i class="fa-solid fa-circle-info"></i> Reason: Certificate parameter structural anomalies detected. Information mismatches central system records.`;
+        }
+    </script>
+</body>
+</html>

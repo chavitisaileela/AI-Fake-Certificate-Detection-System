@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Trial Scanner | LeelaX AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Modern Reset & Clean Typography matching About.html */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* --- TOP APPMENU BAR --- */
+        .top-navbar {
+            background-color: #ffffff;
+            height: 70px;
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e2e8f0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+        }
+
+        .menu-toggle-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #475569;
+            font-size: 1.6rem;
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .menu-toggle-btn:hover {
+            background-color: #f1f5f9;
+            color: #0ea5e9;
+        }
+
+        .auth-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-signin {
+            text-decoration: none;
+            color: #475569;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-signin:hover {
+            color: #0ea5e9;
+            background-color: #f1f5f9;
+        }
+
+        .btn-register {
+            text-decoration: none;
+            background-color: #0ea5e9;
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 8px 18px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+            transition: all 0.2s;
+        }
+
+        .btn-register:hover {
+            background-color: #0284c7;
+            transform: translateY(-1px);
+        }
+
+        /* --- SLIDEOUT SIDEBAR DRAWER --- */
+        .sidebar-drawer {
+            position: fixed;
+            top: 70px;
+            left: -260px;
+            width: 260px;
+            height: calc(100vh - 70px);
+            background-color: #0b132b;
+            color: #94a3b8;
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 99;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-right: 1px solid #1c2541;
+            box-shadow: 5px 0 25px rgba(11, 19, 43, 0.15);
+        }
+
+        .sidebar-drawer.open {
+            left: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 14px 18px;
+            color: #94a3b8;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item i {
+            font-size: 1.2rem;
+            width: 24px;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(56, 189, 248, 0.08);
+            color: #38bdf8;
+        }
+
+        .nav-item.active {
+            background-color: #1c2541;
+            color: #38bdf8;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(15, 23, 42, 0.3);
+            -webkit-backdrop-filter: blur(2px); 
+            backdrop-filter: blur(2px);
+            z-index: 98;
+            display: none;
+        }
+
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        /* --- MAIN PAGE LAYOUT --- */
+        .main-content {
+            margin-top: 70px;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .trial-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .trial-header h1 {
+            color: #0b132b;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .trial-header p {
+            color: #64748b;
+            font-size: 1.05rem;
+        }
+
+        /* Feature Badge Board */
+        .limit-status-board {
+            display: flex;
+            justify-content: space-around;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        }
+
+        .status-pill {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .status-pill i {
+            color: #0ea5e9;
+        }
+
+        .status-pill span.counter {
+            background-color: #fee2e2;
+            color: #ef4444;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+        }
+
+        /* Interactive Workspace Workspace */
+        .scanner-workspace {
+            background: #111a2e;
+            border: 1px solid #1e294b;
+            border-radius: 12px;
+            padding: 40px;
+            min-height: 360px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Upload Placeholder UI */
+        .upload-dropzone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: #94a3b8;
+            transition: color 0.2s;
+            text-align: center;
+        }
+
+        .upload-dropzone:hover {
+            color: #38bdf8;
+        }
+
+        .upload-dropzone i {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+        }
+
+        .upload-dropzone p {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .upload-dropzone span {
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        /* Processing Engine UI Elements */
+        .scanning-loader {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            color: #38bdf8;
+        }
+
+        .scanning-loader i {
+            font-size: 3rem;
+            animation: spin 2s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        .scan-laser-line {
+            display: none;
+            position: absolute;
+            left: 5%;
+            width: 90%;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(56,189,248,0) 0%, #38bdf8 50%, rgba(56,189,248,0) 100%);
+            box-shadow: 0 0 12px #38bdf8;
+            animation: scanMove 2s linear infinite;
+            z-index: 5;
+        }
+
+        /* Basic Results Layout Output */
+        .result-panel {
+            display: none;
+            width: 100%;
+            max-width: 450px;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .result-title {
+            color: #0b132b;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 8px solid #cbd5e1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px auto;
+            transition: border-color 0.3s ease;
+        }
+
+        .score-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #334155;
+            transition: color 0.3s ease;
+        }
+
+        .score-label {
+            font-size: 0.75rem;
+            color: #334155;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+        }
+
+        .verdict-box {
+            font-size: 0.95rem;
+            color: #334155;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #f8fafc;
+        }
+
+        .file-meta {
+            font-size: 0.9rem;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .reset-btn {
+            background-color: #0b132b;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .reset-btn:hover {
+            background-color: #1c2541;
+        }
+
+        /* --- PRICING UPGRADE CARD SECTION MATCHING IMAGE --- */
+        .pricing-section-wrapper {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .enterprise-card {
+            background: #ffffff;
+            border: 2px solid #0ea5e9;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 480px;
+            padding: 35px 30px;
+            position: relative;
+            box-shadow: 0 10px 25px -5px rgba(14, 165, 233, 0.1);
+            text-align: center;
+        }
+
+        .badge-most-popular {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #0ea5e9;
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 6px 20px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.2);
+        }
+
+        .enterprise-card h3 {
+            font-size: 1.6rem;
+            color: #0b132b;
+            margin-top: 5px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .enterprise-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0b132b;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .enterprise-price span.period {
+            font-size: 1rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .enterprise-features-list {
+            list-style: none;
+            text-align: left;
+            max-width: 320px;
+            margin: 0 auto 30px auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .enterprise-features-list li {
+            font-size: 1rem;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .enterprise-features-list li i {
+            color: #10b981;
+            font-size: 1.1rem;
+        }
+
+        .enterprise-upgrade-btn {
+            width: 100%;
+            background-color: #0ea5e9;
+            color: #ffffff;
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+        }
+
+        .enterprise-upgrade-btn:hover {
+            background-color: #0284c7;
+        }
+
+        .enterprise-upgrade-btn:active {
+            transform: scale(0.99);
+        }
+
+        /* --- PAYMENT MODAL SYSTEM --- */
+        .modal-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(11, 19, 43, 0.6);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-container.show {
+            display: flex;
+        }
+
+        .payment-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 460px;
+            border-radius: 14px;
+            padding: 30px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .payment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+
+        .payment-header h2 {
+            font-size: 1.35rem;
+            color: #0b132b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .payment-header h2 i {
+            color: #0ea5e9;
+        }
+
+        .close-modal-btn {
+            background: none;
+            border: none;
+            font-size: 1.6rem;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.2s;
+            line-height: 1;
+        }
+
+        .close-modal-btn:hover {
+            color: #ef4444;
+        }
+
+        .plan-summary {
+            background-color: #f1f5f9;
+            padding: 12px 16px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .plan-summary span {
+            font-weight: 600;
+            color: #475569;
+        }
+
+        .plan-summary .price {
+            color: #0ea5e9;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            color: #94a3b8;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #0ea5e9;
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .form-row input {
+            padding-left: 14px !important;
+        }
+
+        .pay-submit-btn {
+            width: 100%;
+            background-color: #0ea5e9;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 10px;
+        }
+
+        .pay-submit-btn:hover {
+            background-color: #0284c7;
+        }
+
+        .pay-submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Keyframes */
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes scanMove { 0% { top: 10%; } 50% { top: 90%; } 100% { top: 10%; } }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        @media(max-width: 600px) {
+            .limit-status-board { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .pricing-section-wrapper { padding: 0 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="top-navbar">
+        <button class="menu-toggle-btn" id="menuBtn" aria-label="Toggle navigation drawer">
+            <i class="fa-solid fa-bars-staggered"></i>
+        </button>
+
+        <div class="auth-actions">
+            <a href="login.html" class="btn-signin">Sign In</a>
+            <a href="register.html" class="btn-register">Register</a>
+        </div>
+    </header>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <nav class="sidebar-drawer" id="sidebarDrawer">
+        <a href="trail.html" class="nav-item active">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Try Free Trial
+        </a>
+        <a href="About.html" class="nav-item">
+            <i class="fa-solid fa-circle-info"></i> About Us
+        </a>
+    </nav>
+
+    <div class="main-content">
+        <main class="container">
+            
+            <div class="trial-header">
+                <h1>Standard Verification Flow</h1>
+                <p>Preview the basic percentage score evaluation framework below.</p>
+            </div>
+
+            <!-- Limit Status Panel Board -->
+            <div class="limit-status-board">
+                <div class="status-pill">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Quota: 5 Document Scans / Month</span>
+                </div>
+                <div class="status-pill">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>Flow: Basic Assessment Engine</span>
+                </div>
+                <div class="status-pill">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <span>Remaining Scans today: <span class="counter" id="scanCounter">5</span></span>
+                </div>
+            </div>
+
+            <!-- Interactive Scanner Module -->
+            <div class="scanner-workspace" id="workspace">
+                <div class="scan-laser-line" id="laser"></div>
+                
+                <label class="upload-dropzone" id="dropzone" for="fileInput">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    <p>Click or Drop Document Asset Here</p>
+                    <span>Supports PDF, PNG, JPG files up to 5MB</span>
+                </label>
+                <input type="file" id="fileInput" accept=".pdf, .png, .jpg, .jpeg">
+
+                <div class="scanning-loader" id="loader">
+                    <i class="fa-solid fa-circle-notch"></i>
+                    <p>Running Layout Diagnosis Engine...</p>
+                </div>
+
+                <!-- Basic Percentage Output Card -->
+                <div class="result-panel" id="resultCard">
+                    <div class="result-title">Basic Percentage Score</div>
+                    <div class="score-circle" id="scoreCircle">
+                        <div class="score-number" id="scoreNum">0%</div>
+                        <div class="score-label" id="scoreLabel">ANALYZING</div>
+                    </div>
+                    <div class="verdict-box" id="verdictBox">
+                        Verifying elements...
+                    </div>
+                    <div class="file-meta" id="fileNameDisplay">document_preview.pdf</div>
+                    <button class="reset-btn" id="resetBtn">Scan Another File</button>
+                </div>
+            </div>
+
+            <!-- NEW ENTERPRISE CARD SECTION LINKED TO MODAL -->
+            <div class="pricing-section-wrapper">
+                <div class="enterprise-card">
+                    <div class="badge-most-popular">Most Popular</div>
+                    <h3>Enterprise Pro</h3>
+                    <div class="enterprise-price">$49 <span class="period">/ month</span></div>
+                    
+                    <ul class="enterprise-features-list">
+                        <li><i class="fa-solid fa-check"></i> Unlimited Document Scans</li>
+                        <li><i class="fa-solid fa-check"></i> Optical Character Forensics</li>
+                        <li><i class="fa-solid fa-check"></i> Advanced Layout Diagnosis</li>
+                        <li><i class="fa-solid fa-check"></i> Priority API Server Access</li>
+                    </ul>
+
+                    <button class="enterprise-upgrade-btn" id="enterpriseUpgradeBtn">Upgrade Now</button>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- --- PAYMENT OVERLAY SYSTEM --- -->
+    <div class="modal-container" id="paymentModal">
+        <div class="payment-card">
+            <div class="payment-header">
+                <h2><i class="fa-solid fa-shield-halved"></i> Secure Checkout</h2>
+                <button class="close-modal-btn" id="closeModal">&times;</button>
+            </div>
+            
+            <div class="plan-summary">
+                <span>LeelaX AI - Enterprise Pro</span>
+                <span class="price">$49.00/mo</span>
+            </div>
+
+            <form id="paymentForm" onsubmit="event.preventDefault(); handlePaymentSubmit();">
+                <div class="form-group">
+                    <label for="cardName">Cardholder Name</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="cardName" placeholder="John Doe" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cardNumber">Card Number</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-credit-card"></i>
+                        <input type="text" id="cardNumber" placeholder="4111 2222 3333 4444" maxlength="19" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="cardExpiry">Expiration</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardCvv">CVV</label>
+                        <div class="input-wrapper">
+                            <input type="password" id="cardCvv" placeholder="123" maxlength="3" required>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="pay-submit-btn" id="payBtn">Activate Enterprise Pro Features</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebarDrawer = document.getElementById('sidebarDrawer');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        const fileInput = document.getElementById('fileInput');
+        const dropzone = document.getElementById('dropzone');
+        const loader = document.getElementById('loader');
+        const laser = document.getElementById('laser');
+        const resultCard = document.getElementById('resultCard');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const resetBtn = document.getElementById('resetBtn');
+        const scanCounter = document.getElementById('scanCounter');
+
+        const scoreCircle = document.getElementById('scoreCircle');
+        const scoreNum = document.getElementById('scoreNum');
+        const scoreLabel = document.getElementById('scoreLabel');
+        const verdictBox = document.getElementById('verdictBox');
+
+        // Modal Elements
+        const enterpriseUpgradeBtn = document.getElementById('enterpriseUpgradeBtn');
+        const paymentModal = document.getElementById('paymentModal');
+        const closeModal = document.getElementById('closeModal');
+        const payBtn = document.getElementById('payBtn');
+
+        let remainingScans = 5;
+        let runningBase64String = ""; // Stores your generated data safely
+
+        // Drawer Menu Handles
+        menuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebarDrawer.classList.toggle('open');
+            sidebarOverlay.classList.toggle('show');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebarDrawer.classList.remove('open');
+            sidebarOverlay.classList.remove('show');
+        });
+
+        // Modal Action Logic Triggers
+        enterpriseUpgradeBtn.addEventListener('click', () => {
+            paymentModal.classList.add('show');
+        });
+
+        closeModal.addEventListener('click', () => {
+            paymentModal.classList.remove('show');
+        });
+
+        paymentModal.addEventListener('click', (e) => {
+            if(e.target === paymentModal) {
+                paymentModal.classList.remove('show');
+            }
+        });
+
+        function handlePaymentSubmit() {
+            payBtn.disabled = true;
+            payBtn.textContent = "Processing Securely...";
+            
+            setTimeout(() => {
+                alert("Payment authorization successful! Your account has been upgraded to Enterprise Pro Access.");
+                paymentModal.classList.remove('show');
+                
+                document.getElementById('paymentForm').reset();
+                payBtn.disabled = false;
+                payBtn.textContent = "Activate Enterprise Pro Features";
+            }, 2500);
+        }
+
+        // Interactive Scan Workflow Processing Logic
+        fileInput.addEventListener('change', function(e) {
+            if (this.files && this.files[0]) {
+                if (remainingScans <= 0) {
+                    alert("You have exhausted your 5 monthly trial document scans. Please upgrade to enterprise access.");
+                    return;
+                }
+                
+                // Read and generate the base64 code cleanly behind the scenes
+                const file = this.files[0];
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    runningBase64String = evt.target.result;
+                    processMockScan(file.name);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function processMockScan(fileName) {
+            dropzone.style.display = 'none';
+            loader.style.display = 'flex';
+            laser.style.display = 'block';
+
+            setTimeout(() => {
+                loader.style.display = 'none';
+                laser.style.display = 'none';
+                
+                fileNameDisplay.textContent = fileName;
+                resultCard.style.display = 'block';
+                
+                const accuratePercent = Math.floor(Math.random() * (99 - 35 + 1)) + 35;
+                scoreNum.textContent = accuratePercent + "%";
+                
+                if (accuratePercent >= 80) {
+                    scoreNum.style.color = "#10b981";
+                    scoreLabel.style.color = "#059669";
+                    scoreLabel.textContent = "GENUINE";
+                    scoreCircle.style.borderColor = "#a7f3d0";
+                    
+                    verdictBox.style.color = "#065f46";
+                    verdictBox.style.backgroundColor = "#ecfdf5";
+                    verdictBox.innerHTML = "<strong>Result:</strong> Base64 layout compiled successfully. Text string structural alignments verified.";
+                } 
+                else if (accuratePercent >= 60 && accuratePercent < 80) {
+                    scoreNum.style.color = "#3b82f6";
+                    scoreLabel.style.color = "#2563eb";
+                    scoreLabel.textContent = "SUSPICIOUS";
+                    scoreCircle.style.borderColor = "#bfdbfe";
+                    
+                    verdictBox.style.color = "#1e3a8a";
+                    verdictBox.style.backgroundColor = "#eff6ff";
+                    verdictBox.innerHTML = "<strong>Result:</strong> High complexity array. Layout resolution or custom asset values are irregular.";
+                } 
+                else {
+                    scoreNum.style.color = "#ef4444";
+                    scoreLabel.style.color = "#dc2626";
+                    scoreLabel.textContent = "FAKE";
+                    scoreCircle.style.borderColor = "#fca5a5";
+                    
+                    verdictBox.style.color = "#7f1d1d";
+                    verdictBox.style.backgroundColor = "#fef2f2";
+                    verdictBox.innerHTML = "<strong>Result:</strong> Alteration detected. Layout properties fail standard local template evaluations.";
+                }
+
+                // Auto-copy the newly minted base64 text string safely to the clipboard instantly
+                if(runningBase64String) {
+                    navigator.clipboard.writeText(runningBase64String);
+                    fileNameDisplay.textContent = fileName + " (Base64 Copied!)";
+                }
+                
+                remainingScans--;
+                scanCounter.textContent = remainingScans;
+            }, 3000);
+        }
+
+        resetBtn.addEventListener('click', () => {
+            resultCard.style.display = 'none';
+            fileInput.value = '';
+            runningBase64String = "";
+            dropzone.style.display = 'flex';
+            
+            scoreNum.style.color = "#334155";
+            scoreLabel.style.color = "#334155";
+            scoreLabel.textContent = "ANALYZING";
+            scoreCircle.style.borderColor = "#cbd5e1";
+            verdictBox.textContent = "Verifying elements...";
+        });
+    </script>
+</body>
+</html>

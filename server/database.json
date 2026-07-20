@@ -1,0 +1,274 @@
+[
+    {
+        "filename": "apar.jpeg",
+        "timestamp": "2026-06-19 20:28:30",
+        "ocr_text": "OCR Error: Unable to extract text. F:\\Program Files\\Tesseract-OCR\\tesseract.exe is not installed or it's not in your PATH. See README file for more information.",
+        "status": "FRAUD",
+        "confidence": 0,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-06-19 20:34:35",
+        "ocr_text": "OCR Error: Unable to extract text. F:\\Program Files\\Tesseract-OCR\\tesseract.exe is not installed or it's not in your PATH. See README file for more information.",
+        "status": "FRAUD",
+        "confidence": 0,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-06-19 20:36:24",
+        "ocr_text": "OCR Error: Unable to extract text. F:\\Program Files\\Tesseract-OCR\\tesseract.exe is not installed or it's not in your PATH. See README file for more information.",
+        "status": "FRAUD",
+        "confidence": 0,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "adhar .jpg",
+        "timestamp": "2026-06-19 20:37:12",
+        "ocr_text": "OCR Error: Unable to extract text. F:\\Program Files\\Tesseract-OCR\\tesseract.exe is not installed or it's not in your PATH. See README file for more information.",
+        "status": "FRAUD",
+        "confidence": 0,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "certificates.json",
+        "timestamp": "2026-06-19 20:37:50",
+        "ocr_text": "OCR Error: Unable to extract text. cannot identify image file 'uploads\\\\certificates.json'",
+        "status": "FRAUD",
+        "confidence": 0,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "ChatGPT Image Jun 17, 2026, 04_20_15 PM.png",
+        "timestamp": "2026-06-19 21:37:31",
+        "ocr_text": "No readable text detected.",
+        "status": "FRAUD",
+        "confidence": 0,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-06-19 21:37:41",
+        "ocr_text": "i (@) SIEMENS. \u201cI\nTANSAM Ingenuity for fe\n\nInternship Completion Certificate\n\nPrenat\nThis is to certify that CHAVITI SAI LEELA-2023BTDSOS5 of\nJOY UNIVERSITY pursuing Department of\n\n.Tech Computer Science - Year, has successfully completed the Internship Programme\nata Analytics using PowerBI in TANSAM during 7 June \u2014 6* July, 2024. We\nsh her all success in her future endeavor.\n\nLenni a\n\nChief Operating Officer Chief Executive Officer\nDigital Technologies TANSAM,",
+        "status": "GENUINE",
+        "confidence": 60,
+        "reason": "Auto-check verified structural properties matched against centralized ledger storage details."
+    },
+    {
+        "filename": "Screenshot (16).png",
+        "timestamp": "2026-06-19 21:38:23",
+        "ocr_text": "zoom\nWorkplace Meeting L_ LAUNCHED\u2019: screen\n\nLAUNCHED\n\nBN\n\nW Sai Leela LAUNCHED\n\nMathematics\n\nIshan Vijayvargia\n\nStatistics\n\na\n\nParticipants\n3zc\n= Partly cloudy\n\nQ Search\n\nRHYTHM AHWA\n\n& RHYTHM AHUJA,\n\nProgram\nLanguages\n\nBasic Skills\nRequired\n\n\u00a9 Recording\n\nbhavineducatio.\n\n& bhavineducati\n\n\u2018je Sniping Too!\n\nScreenshot copied to clipboard\nAutomatically saved to screenshots folder.\n\nMarkup and share\n\niG eae 2046\n~ @ %4 IN eo \u00a9 07-07-2025",
+        "status": "FRAUD",
+        "confidence": 0,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-06-19 21:40:09",
+        "ocr_text": "i (@) SIEMENS. \u201cI\nTANSAM Ingenuity for fe\n\nInternship Completion Certificate\n\nPrenat\nThis is to certify that CHAVITI SAI LEELA-2023BTDSOS5 of\nJOY UNIVERSITY pursuing Department of\n\n.Tech Computer Science - Year, has successfully completed the Internship Programme\nata Analytics using PowerBI in TANSAM during 7 June \u2014 6* July, 2024. We\nsh her all success in her future endeavor.\n\nLenni a\n\nChief Operating Officer Chief Executive Officer\nDigital Technologies TANSAM,",
+        "status": "GENUINE",
+        "confidence": 60,
+        "reason": "Auto-check verified structural properties matched against centralized ledger storage details."
+    },
+    {
+        "filename": "Screenshot 2026-06-19 214133.png",
+        "timestamp": "2026-06-19 21:41:43",
+        "ocr_text": "No readable text detected.",
+        "status": "FRAUD",
+        "confidence": 0,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "Screenshot 2026-06-19 214122.png",
+        "timestamp": "2026-06-19 21:42:01",
+        "ocr_text": "CERTIFICATE\n\nOf Appreciation\n\nThis certificate is presented to\n\nAndrew. Scott\n\n2oth December 2023 De Radhige Matis\nDATE REPRESENTATIVES",
+        "status": "FRAUD",
+        "confidence": 0,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "ai in hr sai.pdf",
+        "timestamp": "2026-06-19 21:43:12",
+        "ocr_text": "OCR Error: Unable to extract text. cannot identify image file 'uploads\\\\ai in hr sai.pdf'",
+        "status": "FRAUD",
+        "confidence": 0,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "adhar .jpg",
+        "timestamp": "2026-06-19 21:53:07",
+        "ocr_text": "State: Andhra Pradesh,\nPIN Code: 516362,\nMobile: 9440610682\n\nDo esqr& oars / Your Aadhaar No. :\n8917 7997 9600\n\nVID ; 9197 8783 5195 8155\nwe esq, ae MoGQ0xD\n\nChaviti Sai Leela\ns>4s 64/008: 10/03/2005 \u00e9\nS/FEMALE\n\nverb wS0 rogemp were arg, Pawece de OBO ISA\nwe. 20 odiond argty adainec (USPS Qardeon\ndor OR 86 / wQS KMI, car, 27,908)\n\n\u2018adhaar Is proof of identity, not of citizenship\n\nF date of birth. t should be used with verification (online\n| authentication, oF scanning of QR code / offline XML).\n\n8917 7997 9600\nesr, mI oIQonD",
+        "status": "FRAUD",
+        "confidence": 40,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "Fake Certificate Recognition.pdf",
+        "timestamp": "2026-06-19 22:39:52",
+        "ocr_text": "OCR Error: Unable to extract text. cannot identify image file 'uploads\\\\Fake Certificate Recognition.pdf'",
+        "status": "FRAUD",
+        "confidence": 0,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "apar.jpeg",
+        "timestamp": "2026-06-19 22:40:06",
+        "ocr_text": "bd ACADEMIC BANK OF CREDITS\n\npend\n\nAPAAR ID\n\n338052076220\nCHAVITI SAI LEELA\n\nWe use basic information from your DigiLocker account to identify\n\nyou and allow access to ABC platform.\n\nDigiLocker",
+        "status": "FRAUD",
+        "confidence": 40,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "adhar .jpg",
+        "timestamp": "2026-06-19 22:40:18",
+        "ocr_text": "State: Andhra Pradesh,\nPIN Code: 516362,\nMobile: 9440610682\n\nDo esqr& oars / Your Aadhaar No. :\n8917 7997 9600\n\nVID ; 9197 8783 5195 8155\nwe esq, ae MoGQ0xD\n\nChaviti Sai Leela\ns>4s 64/008: 10/03/2005 \u00e9\nS/FEMALE\n\nverb wS0 rogemp were arg, Pawece de OBO ISA\nwe. 20 odiond argty adainec (USPS Qardeon\ndor OR 86 / wQS KMI, car, 27,908)\n\n\u2018adhaar Is proof of identity, not of citizenship\n\nF date of birth. t should be used with verification (online\n| authentication, oF scanning of QR code / offline XML).\n\n8917 7997 9600\nesr, mI oIQonD",
+        "status": "FRAUD",
+        "confidence": 40,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "WhatsApp Image 2026-06-19 at 6.12.33 PM.jpeg",
+        "timestamp": "2026-06-19 22:48:28",
+        "ocr_text": "6:11 re M te 2 all R ull 835%\n\n7233632c-65d0-422d-aefa-b08 G\na27fc2bef\n\n\u00b0\n\u00b0\n\nFake Certificate\nRecognition\n\nChaviti Sai Leela\n2023BTDSO055\nB.Tech CSE(AI&DS)\n\nIntroduction/Problem Statement\n\n+ The rise in forged and manipulated certificates has become a\nmajor concern for institutions.\n\n+ Manual verification methods are time-consuming and often lack\naccuracy.\n\n+ There is a need for an automated system that can reliably\nanalyze certificate data.\n\n+ This project aims to provide a fast, efficient, and accurate\nsolution using OCR-based verification.\n\nObjectives of the Project\n\nTo automatically extract text from certificates using OCR\ntechnology.\n+ To identify signs of tampering or inconsistencies in the\nextracted Certificate data.\n+ To provide a fast and accurate method for verifying the\nauthenticity of certificates.\nTo reduce manual effort and human errors in certificate\nvalidation.\n+ To deliver a simple and user-friendly system for uploading and\nchecking certificates.\n\n(a)\n\nRotate screen Play Export",
+        "status": "FRAUD",
+        "confidence": 40,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "ai in hr sai.pdf",
+        "timestamp": "2026-06-19 22:49:08",
+        "ocr_text": "OCR Error: Unable to extract text. cannot identify image file 'uploads\\\\ai in hr sai.pdf'",
+        "status": "FRAUD",
+        "confidence": 0,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "apar.jpeg",
+        "timestamp": "2026-06-19 22:49:29",
+        "ocr_text": "bd ACADEMIC BANK OF CREDITS\n\npend\n\nAPAAR ID\n\n338052076220\nCHAVITI SAI LEELA\n\nWe use basic information from your DigiLocker account to identify\n\nyou and allow access to ABC platform.\n\nDigiLocker",
+        "status": "FRAUD",
+        "confidence": 40,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-06-19 22:49:43",
+        "ocr_text": "i (@) SIEMENS. \u201cI\nTANSAM Ingenuity for fe\n\nInternship Completion Certificate\n\nPrenat\nThis is to certify that CHAVITI SAI LEELA-2023BTDSOS5 of\nJOY UNIVERSITY pursuing Department of\n\n.Tech Computer Science - Year, has successfully completed the Internship Programme\nata Analytics using PowerBI in TANSAM during 7 June \u2014 6* July, 2024. We\nsh her all success in her future endeavor.\n\nLenni a\n\nChief Operating Officer Chief Executive Officer\nDigital Technologies TANSAM,",
+        "status": "GENUINE",
+        "confidence": 60,
+        "reason": "Auto-check verified structural properties matched against centralized ledger storage details."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-06-19 22:53:45",
+        "ocr_text": "i (@) SIEMENS. \u201cI\nTANSAM Ingenuity for fe\n\nInternship Completion Certificate\n\nPrenat\nThis is to certify that CHAVITI SAI LEELA-2023BTDSOS5 of\nJOY UNIVERSITY pursuing Department of\n\n.Tech Computer Science - Year, has successfully completed the Internship Programme\nata Analytics using PowerBI in TANSAM during 7 June \u2014 6* July, 2024. We\nsh her all success in her future endeavor.\n\nLenni a\n\nChief Operating Officer Chief Executive Officer\nDigital Technologies TANSAM,",
+        "status": "GENUINE",
+        "confidence": 60,
+        "reason": "Auto-check verified structural properties matched against centralized ledger storage details."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-06-19 23:01:59",
+        "ocr_text": "i (@) SIEMENS. \u201cI\nTANSAM Ingenuity for fe\n\nInternship Completion Certificate\n\nPrenat\nThis is to certify that CHAVITI SAI LEELA-2023BTDSOS5 of\nJOY UNIVERSITY pursuing Department of\n\n.Tech Computer Science - Year, has successfully completed the Internship Programme\nata Analytics using PowerBI in TANSAM during 7 June \u2014 6* July, 2024. We\nsh her all success in her future endeavor.\n\nLenni a\n\nChief Operating Officer Chief Executive Officer\nDigital Technologies TANSAM,",
+        "status": "GENUINE",
+        "confidence": 60,
+        "reason": "Auto-check verified structural properties matched against centralized ledger storage details."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-06-19 23:01:59",
+        "ocr_text": "i (@) SIEMENS. \u201cI\nTANSAM Ingenuity for fe\n\nInternship Completion Certificate\n\nPrenat\nThis is to certify that CHAVITI SAI LEELA-2023BTDSOS5 of\nJOY UNIVERSITY pursuing Department of\n\n.Tech Computer Science - Year, has successfully completed the Internship Programme\nata Analytics using PowerBI in TANSAM during 7 June \u2014 6* July, 2024. We\nsh her all success in her future endeavor.\n\nLenni a\n\nChief Operating Officer Chief Executive Officer\nDigital Technologies TANSAM,",
+        "status": "GENUINE",
+        "confidence": 60,
+        "reason": "Auto-check verified structural properties matched against centralized ledger storage details."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-06-20 00:54:11",
+        "ocr_text": "i (@) SIEMENS. \u201cI\nTANSAM Ingenuity for fe\n\nInternship Completion Certificate\n\nPrenat\nThis is to certify that CHAVITI SAI LEELA-2023BTDSOS5 of\nJOY UNIVERSITY pursuing Department of\n\n.Tech Computer Science - Year, has successfully completed the Internship Programme\nata Analytics using PowerBI in TANSAM during 7 June \u2014 6* July, 2024. We\nsh her all success in her future endeavor.\n\nLenni a\n\nChief Operating Officer Chief Executive Officer\nDigital Technologies TANSAM,",
+        "status": "GENUINE",
+        "confidence": 60,
+        "reason": "Auto-check verified structural properties matched against centralized ledger storage details."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-06-20 01:26:29",
+        "ocr_text": "i (@) SIEMENS. \u201cI\nTANSAM Ingenuity for fe\n\nInternship Completion Certificate\n\nPrenat\nThis is to certify that CHAVITI SAI LEELA-2023BTDSOS5 of\nJOY UNIVERSITY pursuing Department of\n\n.Tech Computer Science - Year, has successfully completed the Internship Programme\nata Analytics using PowerBI in TANSAM during 7 June \u2014 6* July, 2024. We\nsh her all success in her future endeavor.\n\nLenni a\n\nChief Operating Officer Chief Executive Officer\nDigital Technologies TANSAM,",
+        "status": "GENUINE",
+        "confidence": 60,
+        "reason": "Auto-check verified structural properties matched against centralized ledger storage details."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-06-20 02:38:36",
+        "ocr_text": "i (@) SIEMENS. \u201cI\nTANSAM Ingenuity for fe\n\nInternship Completion Certificate\n\nPrenat\nThis is to certify that CHAVITI SAI LEELA-2023BTDSOS5 of\nJOY UNIVERSITY pursuing Department of\n\n.Tech Computer Science - Year, has successfully completed the Internship Programme\nata Analytics using PowerBI in TANSAM during 7 June \u2014 6* July, 2024. We\nsh her all success in her future endeavor.\n\nLenni a\n\nChief Operating Officer Chief Executive Officer\nDigital Technologies TANSAM,",
+        "status": "GENUINE",
+        "confidence": 60,
+        "reason": "Auto-check verified structural properties matched against centralized ledger storage details."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-06-20 16:58:33",
+        "ocr_text": "i (@) SIEMENS. \u201cI\nTANSAM Ingenuity for fe\n\nInternship Completion Certificate\n\nPrenat\nThis is to certify that CHAVITI SAI LEELA-2023BTDSOS5 of\nJOY UNIVERSITY pursuing Department of\n\n.Tech Computer Science - Year, has successfully completed the Internship Programme\nata Analytics using PowerBI in TANSAM during 7 June \u2014 6* July, 2024. We\nsh her all success in her future endeavor.\n\nLenni a\n\nChief Operating Officer Chief Executive Officer\nDigital Technologies TANSAM,",
+        "status": "GENUINE",
+        "confidence": 60,
+        "reason": "Auto-check verified structural properties matched against centralized ledger storage details."
+    },
+    {
+        "filename": "apar.jpeg",
+        "timestamp": "2026-06-23 02:27:38",
+        "ocr_text": "bd ACADEMIC BANK OF CREDITS\n\npend\n\nAPAAR ID\n\n338052076220\nCHAVITI SAI LEELA\n\nWe use basic information from your DigiLocker account to identify\n\nyou and allow access to ABC platform.\n\nDigiLocker",
+        "status": "FRAUD",
+        "confidence": 40,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "adhar .jpg",
+        "timestamp": "2026-06-23 02:49:05",
+        "ocr_text": "State: Andhra Pradesh,\nPIN Code: 516362,\nMobile: 9440610682\n\nDo esqr& oars / Your Aadhaar No. :\n8917 7997 9600\n\nVID ; 9197 8783 5195 8155\nwe esq, ae MoGQ0xD\n\nChaviti Sai Leela\ns>4s 64/008: 10/03/2005 \u00e9\nS/FEMALE\n\nverb wS0 rogemp were arg, Pawece de OBO ISA\nwe. 20 odiond argty adainec (USPS Qardeon\ndor OR 86 / wQS KMI, car, 27,908)\n\n\u2018adhaar Is proof of identity, not of citizenship\n\nF date of birth. t should be used with verification (online\n| authentication, oF scanning of QR code / offline XML).\n\n8917 7997 9600\nesr, mI oIQonD",
+        "status": "FRAUD",
+        "confidence": 40,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "adhar .jpg",
+        "timestamp": "2026-06-23 02:50:22",
+        "ocr_text": "State: Andhra Pradesh,\nPIN Code: 516362,\nMobile: 9440610682\n\nDo esqr& oars / Your Aadhaar No. :\n8917 7997 9600\n\nVID ; 9197 8783 5195 8155\nwe esq, ae MoGQ0xD\n\nChaviti Sai Leela\ns>4s 64/008: 10/03/2005 \u00e9\nS/FEMALE\n\nverb wS0 rogemp were arg, Pawece de OBO ISA\nwe. 20 odiond argty adainec (USPS Qardeon\ndor OR 86 / wQS KMI, car, 27,908)\n\n\u2018adhaar Is proof of identity, not of citizenship\n\nF date of birth. t should be used with verification (online\n| authentication, oF scanning of QR code / offline XML).\n\n8917 7997 9600\nesr, mI oIQonD",
+        "status": "FRAUD",
+        "confidence": 40,
+        "reason": "Auto-check flagged suspicious criteria mismatches inside critical credential property parameters."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-07-12 00:05:58",
+        "ocr_text": "i (@) SIEMENS. \u201cI\nTANSAM Ingenuity for fe\n\nInternship Completion Certificate\n\nPrenat\nThis is to certify that CHAVITI SAI LEELA-2023BTDSOS5 of\nJOY UNIVERSITY pursuing Department of\n\n.Tech Computer Science - Year, has successfully completed the Internship Programme\nata Analytics using PowerBI in TANSAM during 7 June \u2014 6* July, 2024. We\nsh her all success in her future endeavor.\n\nLenni a\n\nChief Operating Officer Chief Executive Officer\nDigital Technologies TANSAM,",
+        "status": "GENUINE",
+        "confidence": 60,
+        "reason": "Auto-check verified structural properties matched against centralized ledger storage details."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-07-12 00:06:10",
+        "ocr_text": "i (@) SIEMENS. \u201cI\nTANSAM Ingenuity for fe\n\nInternship Completion Certificate\n\nPrenat\nThis is to certify that CHAVITI SAI LEELA-2023BTDSOS5 of\nJOY UNIVERSITY pursuing Department of\n\n.Tech Computer Science - Year, has successfully completed the Internship Programme\nata Analytics using PowerBI in TANSAM during 7 June \u2014 6* July, 2024. We\nsh her all success in her future endeavor.\n\nLenni a\n\nChief Operating Officer Chief Executive Officer\nDigital Technologies TANSAM,",
+        "status": "GENUINE",
+        "confidence": 60,
+        "reason": "Auto-check verified structural properties matched against centralized ledger storage details."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-07-12 00:09:01",
+        "ocr_text": "i (@) SIEMENS. \u201cI\nTANSAM Ingenuity for fe\n\nInternship Completion Certificate\n\nPrenat\nThis is to certify that CHAVITI SAI LEELA-2023BTDSOS5 of\nJOY UNIVERSITY pursuing Department of\n\n.Tech Computer Science - Year, has successfully completed the Internship Programme\nata Analytics using PowerBI in TANSAM during 7 June \u2014 6* July, 2024. We\nsh her all success in her future endeavor.\n\nLenni a\n\nChief Operating Officer Chief Executive Officer\nDigital Technologies TANSAM,",
+        "status": "GENUINE",
+        "confidence": 60,
+        "reason": "Auto-check verified structural properties matched against centralized ledger storage details."
+    },
+    {
+        "filename": "Screenshot 2025-03-09 153158.png",
+        "timestamp": "2026-07-12 00:25:43",
+        "ocr_text": "i (@) SIEMENS. \u201cI\nTANSAM Ingenuity for fe\n\nInternship Completion Certificate\n\nPrenat\nThis is to certify that CHAVITI SAI LEELA-2023BTDSOS5 of\nJOY UNIVERSITY pursuing Department of\n\n.Tech Computer Science - Year, has successfully completed the Internship Programme\nata Analytics using PowerBI in TANSAM during 7 June \u2014 6* July, 2024. We\nsh her all success in her future endeavor.\n\nLenni a\n\nChief Operating Officer Chief Executive Officer\nDigital Technologies TANSAM,",
+        "status": "GENUINE",
+        "confidence": 60,
+        "reason": "Auto-check verified structural properties matched against centralized ledger storage details."
+    }
+]

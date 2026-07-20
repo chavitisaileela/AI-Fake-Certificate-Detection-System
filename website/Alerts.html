@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fraud Alerts Tracking Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0f172a; color: #f1f5f9; margin: 0; display: flex; min-height: 100vh; }
+        .sidebar { width: 260px; background: #1e293b; border-right: 1px solid #334155; padding: 24px; display: flex; flex-direction: column; box-sizing: border-box; shrink: 0; }
+        .sidebar a { display: flex; align-items: center; gap: 12px; color: #94a3b8; text-decoration: none; padding: 12px 16px; border-radius: 8px; margin-bottom: 8px; font-weight: 600; font-size: 15px; }
+        .sidebar a:hover, .sidebar a.active { background: rgba(245, 101, 101, 0.15); color: #f56565; }
+        
+        .main-container { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .top-navbar { height: 70px; background: #1e293b; border-bottom: 1px solid #334155; display: flex; align-items: center; justify-content: flex-end; padding: 0 40px; box-sizing: border-box; width: 100%; }
+        .user-badge { display: flex; align-items: center; gap: 12px; cursor: pointer; text-decoration: none; }
+
+        .main-content { padding: 40px; display: flex; flex-direction: column; align-items: center; }
+        .content-wrapper { width: 100%; max-width: 1100px; display: flex; flex-direction: column; gap: 30px; }
+        
+        .alert-banner { background: rgba(245, 101, 101, 0.1); border: 1px solid #f56565; border-radius: 8px; padding: 16px; display: flex; align-items: center; gap: 12px; color: #f56565; font-weight: 600; }
+        .panel-container { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { background: #0f172a; color: #94a3b8; font-size: 14px; font-weight: 600; padding: 16px 12px; }
+        td { padding: 18px 12px; border-bottom: 1px solid #334155; font-size: 14px; color: #cbd5e1; vertical-align: middle; }
+        
+        .badge-fraud { background: rgba(239, 68, 68, 0.15); color: #f87171; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: bold; text-transform: uppercase; border: 1px solid rgba(239, 68, 68, 0.3); display: inline-block; }
+        .file-link { color: #38bdf8; text-decoration: none; font-weight: 600; }
+        .file-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;700&display=swap" rel="stylesheet">
+
+        <div class="sidebar-logo" style="display: flex; flex-direction: column; align-items: center; padding-bottom: 20px; margin-bottom: 30px; border-bottom: 2px solid #334155;">
+            <div style="font-size: 42px; line-height: 1; margin-bottom: 4px;">
+                <span style="font-family: 'Great Vibes', cursive; background: linear-gradient(135deg, #b91c1c, #ca8a04); -webkit-background-clip: text; -webkit-text-fill-color: transparent; padding-right: 2px;">Leela</span><span style="font-family: 'Poppins', sans-serif; font-weight: 700; color: #ffffff; font-size: 28px; vertical-align: middle;">X</span>
+            </div>
+        </div>
+
+        <a href="dashboard.html"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+        <a href="verify.html"><i class="fa-solid fa-shield-halved"></i> Verify Certificate</a>
+        <a href="alerts.html" class="active"><i class="fa-solid fa-triangle-exclamation"></i> Alerts</a>
+        <a href="profile.html"><i class="fa-solid fa-user"></i> Profile</a>
+        <a href="about.html"><i class="fa-solid fa-circle-info"></i> About Us</a>
+        <a href="#" onclick="logout()" style="margin-top: auto; background: #1e293b; border: 1px solid #f56565; color: #f56565; justify-content: center;">Exit System</a>
+    </div>
+
+    <div class="main-container">
+        <div class="top-navbar">
+            <a href="profile.html" class="user-badge">
+                <div class="user-info" style="text-align: right; margin-right: 12px;">
+                    <div class="name" id="topUserNavName" style="font-size: 14px; font-weight: 600; color: #f1f5f9;">Chaviti Sai Leela</div>
+                    <div class="role" id="topUserNavRole" style="font-size: 11px; color: #94a3b8; text-transform: uppercase;">Admin Panel</div>
+                </div>
+                <div id="sidebarAvatarContainer" style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #38bdf8; overflow: hidden; display: flex; align-items: center; justify-content: center; background: #1e293b;">
+                    <img id="topUserNavAvatar" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTIiIGZpbGw9IiNlMmU4ZjAiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjgiIHI9IjQiIGZpbGw9IiM5NGEzYjgiLz48cGF0aCBkPSJNNCAyMEM0IDE1LjU4MTcgNy41ODE3MiAxMiAxMiAxMkMxNi40MTgzIDEyIDIwIDE1LjU4MTcgMjAgMjAiIHN0cm9rZT0iIzk0YTNiOCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=" style="width: 100%; height: 100%; object-fit: cover;" alt="Chaviti Profile">
+                </div>
+            </a>
+        </div>
+
+        <div class="main-content">
+            <div class="content-wrapper">
+                <div class="alert-banner">
+                    <i class="fa-solid fa-triangle-exclamation fa-lg"></i>
+                    <span>Security Alert Core: Displaying High Risk Compromised Fraud Identifications Only.</span>
+                </div>
+
+                <div class="panel-container">
+                    <h2 style="font-size: 20px; font-weight: 600; margin-top: 0; margin-bottom: 24px; color: #ffffff;">Recent Verification Timeline Analysis History</h2>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="color: #cbd5e1; border-bottom: 2px solid #334155;">
+                                <th style="width: 60px;">S.No</th>
+                                <th>Asset Target File Identifier</th>
+                                <th>Document Type</th>
+                                <th>Scan Event Timestamp</th>
+                                <th>Confidence Score</th>
+                                <th>Final Status Verdict</th>
+                            </tr>
+                        </thead>
+                        <tbody id="fraudAlertsTable">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Retrieve synchronized variables from localStorage
+            const savedName = localStorage.getItem('reg_fullname') || localStorage.getItem('fullName') || "Chaviti Sai Leela";
+            const savedRole = localStorage.getItem('reg_role') || localStorage.getItem('role') || "Admin Panel";
+            // CONVERTED: Updated default fallback value to the base64 string
+            const savedAvatar = localStorage.getItem('user_avatar') || "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PGNpcmNsZSBjeD0iMTIiIGN5PSIxMiIgcj0iMTIiIGZpbGw9IiNlMmU4ZjAiLz48Y2lyY2xlIGN4PSIxMiIgY3k9IjgiIHI9IjQiIGZpbGw9IiM5NGEzYjgiLz48cGF0aCBkPSJNNCAyMEM0IDE1LjU4MTcgNy41ODE3MiAxMiAxMiAxMkMxNi40MTgzIDEyIDIwIDE1LjU4MTcgMjAgMjAiIHN0cm9rZT0iIzk0YTNiOCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48L3N2Zz4=";
+            
+            if (document.getElementById('topUserNavName')) {
+                document.getElementById('topUserNavName').innerText = savedName;
+            }
+            if (document.getElementById('topUserNavRole')) {
+                document.getElementById('topUserNavRole').innerText = savedRole;
+            }
+            
+            // Handle profile dynamic avatars (images vs emojis)
+            const avatarContainer = document.getElementById('sidebarAvatarContainer');
+            if (avatarContainer) {
+                if (savedAvatar.length <= 4 && !savedAvatar.startsWith("http") && !savedAvatar.startsWith("data:")) {
+                    avatarContainer.innerHTML = `<span style="font-size: 20px; line-height: 40px; text-align: center; width: 100%; display: block;">${savedAvatar}</span>`;
+                } else {
+                    avatarContainer.innerHTML = `<img id="topUserNavAvatar" src="${savedAvatar}" style="width: 100%; height: 100%; object-fit: cover;" alt="User Profile">`;
+                }
+            }
+
+            loadScannedFraudRecords();
+        });
+
+        function loadScannedFraudRecords() {
+            const tableBody = document.getElementById('fraudAlertsTable');
+            
+            // Read from the unified verification history store
+            let allRecords = JSON.parse(localStorage.getItem('shared_scan_records')) || [];
+
+            // FILTER: Extract exclusively entries marked explicitly as Fraud
+            let fraudRecords = allRecords.filter(record => 
+                String(record.status || '').toUpperCase() === 'FRAUD'
+            );
+
+            // Mock seed data fallback if no scans have executed yet
+            if (fraudRecords.length === 0 && allRecords.length === 0) {
+                fraudRecords = [
+                    { filename: "Screenshot 2025-03-08 110503.png", doc_type: "Certificate", timestamp: "2026-07-13 19:26:35", confidence: "50%", status: "Fraud" },
+                    { filename: "Screenshot 2025-03-09 153158.png", doc_type: "Certificate", timestamp: "2026-07-13 15:40:16", confidence: "64%", status: "Fraud" },
+                    { filename: "employment_record_johnson.pdf", doc_type: "Certificate", timestamp: "2020-11-19 22:45:10", confidence: "34.1%", status: "Fraud" }
+                ];
+                localStorage.setItem('shared_scan_records', JSON.stringify(fraudRecords));
+            }
+
+            tableBody.innerHTML = '';
+
+            if (fraudRecords.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #64748b; padding: 30px;">No fraud records found in history registry.</td></tr>`;
+                return;
+            }
+
+            // Render output items
+            fraudRecords.forEach((record, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td><a href="#" class="file-link">${record.filename}</a></td>
+                    <td>${record.doc_type || "Certificate"}</td>
+                    <td>${record.timestamp}</td>
+                    <td>${record.confidence}</td>
+                    <td><span class="badge-fraud">${record.status.toUpperCase()}</span></td>
+                `;
+                tableBody.appendChild(tr);
+            });
+        }
+
+        function logout() {
+            if(confirm("Confirm secure system workspace termination?")) {
+                window.location.href = 'about.html';
+            }
+        }
+    </script>
+</body>
+</html>
