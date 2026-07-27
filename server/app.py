@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Tesseract Path Configuration
-# Checks if custom path is set in environment, otherwise defaults to local Windows path or system PATH
+# Check Windows path first; if it doesn't exist, fallback to system-installed Tesseract (e.g. Linux/Render)
 TESSERACT_PATH = os.getenv('TESSERACT_PATH', r'F:\Program Files\Tesseract-OCR\tesseract.exe')
 if os.path.exists(TESSERACT_PATH):
     pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
@@ -40,7 +40,11 @@ def write_json(filename, data):
 
 @app.route('/', methods=['GET'])
 def home():
-    return "AI Certificate Verification Server Running"
+    # Returns a JSON payload compatible with frontend test connection scripts
+    return jsonify({
+        "status": "success",
+        "message": "AI Certificate Verification Server is Running!"
+    }), 200
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -168,6 +172,9 @@ def dashboard():
 @app.route('/change-password', methods=['POST'])
 def change_password():
     data = request.get_json()
+    if not data:
+        return jsonify({"status": "error", "message": "No input provided"}), 400
+
     current_password = data.get('current')
     new_password = data.get('newPass')
     
@@ -189,4 +196,4 @@ def change_password():
 # --- Server Initialization Execution Block ---
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    app.run(host='0.0.0.0', port=port, debug=True)

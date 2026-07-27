@@ -494,21 +494,22 @@
             transform: scale(0.99);
         }
 
-        /* --- PAYMENT MODAL SYSTEM --- */
-        .modal-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(11, 19, 43, 0.6);
-            backdrop-filter: blur(4px);
-            z-index: 1000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+       /* --- PAYMENT MODAL SYSTEM --- */
+.modal-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(11, 19, 43, 0.6);
+    -webkit-backdrop-filter: blur(4px); /* For Safari and Safari iOS */
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
 
         .modal-container.show {
             display: flex;
@@ -685,10 +686,11 @@
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <nav class="sidebar-drawer" id="sidebarDrawer">
-        <a href="trail.html" class="nav-item active">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> Try Free Trial
+        <!-- FIXED LINK: Changed website/trial.html to trial.html -->
+        <a href="trial.html" class="nav-item active">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Try Free trial
         </a>
-        <a href="About.html" class="nav-item">
+        <a href="index.html" class="nav-item">
             <i class="fa-solid fa-circle-info"></i> About Us
         </a>
     </nav>
@@ -748,7 +750,7 @@
                 </div>
             </div>
 
-            <!-- NEW ENTERPRISE CARD SECTION LINKED TO MODAL -->
+            <!-- PRICING UPGRADE CARD SECTION -->
             <div class="pricing-section-wrapper">
                 <div class="enterprise-card">
                     <div class="badge-most-popular">Most Popular</div>
@@ -769,7 +771,7 @@
         </main>
     </div>
 
-    <!-- --- PAYMENT OVERLAY SYSTEM --- -->
+    <!-- PAYMENT OVERLAY SYSTEM -->
     <div class="modal-container" id="paymentModal">
         <div class="payment-card">
             <div class="payment-header">
@@ -845,7 +847,7 @@
         const payBtn = document.getElementById('payBtn');
 
         let remainingScans = 5;
-        let runningBase64String = ""; // Stores your generated data safely
+        let runningBase64String = "";
 
         // Drawer Menu Handles
         menuBtn.addEventListener('click', (e) => {
@@ -896,7 +898,6 @@
                     return;
                 }
                 
-                // Read and generate the base64 code cleanly behind the scenes
                 const file = this.files[0];
                 const reader = new FileReader();
                 reader.onload = function(evt) {
@@ -953,7 +954,6 @@
                     verdictBox.innerHTML = "<strong>Result:</strong> Alteration detected. Layout properties fail standard local template evaluations.";
                 }
 
-                // Auto-copy the newly minted base64 text string safely to the clipboard instantly
                 if(runningBase64String) {
                     navigator.clipboard.writeText(runningBase64String);
                     fileNameDisplay.textContent = fileName + " (Base64 Copied!)";
