@@ -1,8 +1,7 @@
 // =========================================================================
 // 1. GLOBAL SETUP, CONFIGURATIONS & SIMULATION LAYERS
 // =========================================================================
-const API_URL = "http://127.0.0.1:5000";
-
+const API_BASE_URL = "https://ai-fake-certificate-detection-system.onrender.com";
 let generatedOTP = null;
 let cachedScanRecords = [];
 let dashboardBarChartInstance = null;
@@ -43,7 +42,7 @@ async function handleLogin(e) {
     const password = document.getElementById('password').value;
     const role = document.getElementById('role').value;
     try {
-        const res = await fetch(`${API_URL}/login`, {
+        const res = await fetch(`${API_BASE_URL}/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password, role })
@@ -142,7 +141,7 @@ async function handleRegister(e) {
     const location = locationField ? locationField.value : "";
 
     try {
-        const res = await fetch(`${API_URL}/register`, {
+        const res = await fetch(`${API_BASE_URL}/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ first_name, last_name, email, phone, location, password, role })
@@ -172,8 +171,6 @@ async function handleRegister(e) {
     }
 }
 
-
-
 // =========================================================================
 // 3. CORE DASHBOARD ENGINE - LOADERS, CONTROLS & LOG FILTERS
 //               Dashboard Page Script
@@ -183,7 +180,7 @@ async function loadDashboard() {
     
     let dashboardData = null;
     try {
-        const res = await fetch(`${API_URL}/dashboard`);
+        const res = await fetch(`${API_BASE_URL}/dashboard`);
         if (res.ok) {
             dashboardData = await res.json();
         }
@@ -336,7 +333,6 @@ function filterDashboardTable(term) {
     });
 }
 
-
 // =========================================================================
 // 4. SCAN VERIFICATION WORKFLOWS & MODAL INJECTORS                 
 //     Verification Page Script
@@ -365,7 +361,7 @@ async function handleVerify(e) {
     if (loadingEl) loadingEl.style.display = "block";
     if (submitBtn) submitBtn.disabled = true;
     try {
-        const res = await fetch(`${API_URL}/verify`, {
+        const res = await fetch(`${API_BASE_URL}/verify`, {
             method: 'POST',
             body: formData
         });
@@ -512,7 +508,6 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 };
-
 
 // =========================================================================
 // 5. PROFILE INTERFACES & HARDWARE MEDIA STREAM CHANNELS                       
@@ -756,7 +751,6 @@ function selectEmojiAvatar(emoji) {
     closeAvatarModal();
 }
 
-
 // =========================================================================
 // 6. ANOMALY THREAT ALERT MONITORS
 //    Alerts / Security Page Script
@@ -769,7 +763,7 @@ async function loadAlertsViewData() {
 
         let dashboardData = null;
         try {
-            const res = await fetch(`${API_URL}/dashboard`);
+            const res = await fetch(`${API_BASE_URL}/dashboard`);
             if (res.ok) {
                 dashboardData = await res.json();
             }
@@ -846,7 +840,6 @@ function loadLiveScanAlerts() {
         alertsTable.appendChild(row);
     });
 }
-
 
 // =========================================================================
 // 7. GRAPH DATA VISUALIZATION SYSTEMS (RADIALS & METRICS)
@@ -996,7 +989,6 @@ function updateConfidenceDonut(score) {
     });
 }
 
-
 // =========================================================================
 // 8. GLOBAL ENGINE MANAGEMENT & DARK MODE UTILITIES
 //  Utility Configurations & Global Theme Engines Script
@@ -1058,7 +1050,6 @@ function handleImageFileSelect(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
-
 
 // =========================================================================
 // 9. UNIFIED SYSTEM LIFECYCLE DOM MOUNT SEQUENCE
@@ -1342,43 +1333,47 @@ document.addEventListener("DOMContentLoaded", async () => {
 // 10. About Page 
 // =========================================================================
     
-        const menuBtn = document.getElementById('menuBtn');
-        const sidebarDrawer = document.getElementById('sidebarDrawer');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
-        const dropdownTrigger = document.getElementById('dropdownTrigger');
-        const profileDropdown = document.getElementById('profileDropdown');
+const menuBtn = document.getElementById('menuBtn');
+const sidebarDrawer = document.getElementById('sidebarDrawer');
+const sidebarOverlay = document.getElementById('sidebarOverlay');
+const dropdownTrigger = document.getElementById('dropdownTrigger');
+const profileDropdown = document.getElementById('profileDropdown');
 
-        // Drawer Menu Open/Close Toggles
-        menuBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            sidebarDrawer.classList.toggle('open');
-            sidebarOverlay.classList.toggle('show');
-        });
+if (menuBtn && sidebarDrawer && sidebarOverlay) {
+    // Drawer Menu Open/Close Toggles
+    menuBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sidebarDrawer.classList.toggle('open');
+        sidebarOverlay.classList.toggle('show');
+    });
 
-        // Click on background overlay to close drawer
-        sidebarOverlay.addEventListener('click', () => {
-            sidebarDrawer.classList.remove('open');
-            sidebarOverlay.classList.remove('show');
-        });
+    // Click on background overlay to close drawer
+    sidebarOverlay.addEventListener('click', () => {
+        sidebarDrawer.classList.remove('open');
+        sidebarOverlay.classList.remove('show');
+    });
+}
 
-        // Dropdown Menu Toggles targeted via the dropdown arrow indicator specifically
-        dropdownTrigger.addEventListener('click', (e) => {
-            e.stopPropagation();
-            e.preventDefault(); // Stop anchor navigate logic on arrow click
-            profileDropdown.classList.toggle('show');
-        });
+if (dropdownTrigger && profileDropdown) {
+    // Dropdown Menu Toggles targeted via the dropdown arrow indicator specifically
+    dropdownTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault(); // Stop anchor navigate logic on arrow click
+        profileDropdown.classList.toggle('show');
+    });
+}
 
-        // Global layout events to dismiss menus instantly on out-clicks
-        document.addEventListener('click', (e) => {
-            if (!sidebarDrawer.contains(e.target) && e.target !== menuBtn) {
-                sidebarDrawer.classList.remove('open');
-                sidebarOverlay.classList.remove('show');
-            }
-            if (!dropdownTrigger.contains(e.target) && !profileDropdown.contains(e.target)) {
-                profileDropdown.classList.remove('show');
-            }
-        });
-  
+// Global layout events to dismiss menus instantly on out-clicks
+document.addEventListener('click', (e) => {
+    if (sidebarDrawer && menuBtn && !sidebarDrawer.contains(e.target) && e.target !== menuBtn) {
+        sidebarDrawer.classList.remove('open');
+        if (sidebarOverlay) sidebarOverlay.classList.remove('show');
+    }
+    if (dropdownTrigger && profileDropdown && !dropdownTrigger.contains(e.target) && !profileDropdown.contains(e.target)) {
+        profileDropdown.classList.remove('show');
+    }
+});
+
 // Example: Run this when the user saves their profile
 function saveProfileData(name, profilePicUrl, role) {
     // 1. Save to localStorage so other pages can see it
@@ -1388,6 +1383,7 @@ function saveProfileData(name, profilePicUrl, role) {
 
     alert("Profile updated successfully!");
 }     
+
 document.addEventListener("DOMContentLoaded", () => {
     // 1. Fetch saved details from localStorage
     const savedName = localStorage.getItem("username");
@@ -1414,118 +1410,130 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 const dropzone = document.getElementById('dropzone');
-        const fileInput = document.getElementById('fileInput');
-        const loader = document.getElementById('loader');
-        const laser = document.getElementById('laser');
-        const resultCard = document.getElementById('resultCard');
-        const fileNameDisplay = document.getElementById('fileNameDisplay');
-        const resetBtn = document.getElementById('resetBtn');
-        const scanCounter = document.getElementById('scanCounter');
-        const hamburgerBtn = document.getElementById('hamburgerBtn');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
+const fileInput = document.getElementById('fileInput');
+const loader = document.getElementById('loader');
+const laser = document.getElementById('laser');
+const resultCard = document.getElementById('resultCard');
+const fileNameDisplay = document.getElementById('fileNameDisplay');
+const resetBtn = document.getElementById('resetBtn');
+const scanCounter = document.getElementById('scanCounter');
+const hamburgerBtn = document.getElementById('hamburgerBtn');
 
-        let remainingScans = 5;
+let remainingScans = 5;
 
-        // Mobile Sidebar Toggle
-        hamburgerBtn.addEventListener('click', () => {
-            sidebarOverlay.classList.add('show');
-        });
+// Mobile Sidebar Toggle
+if (hamburgerBtn && sidebarOverlay) {
+    hamburgerBtn.addEventListener('click', () => {
+        sidebarOverlay.classList.add('show');
+    });
 
-        sidebarOverlay.addEventListener('click', (e) => {
-            if (e.target === sidebarOverlay) {
-                sidebarOverlay.classList.remove('show');
-            }
-        });
-
-        // Interactive Scan Workflow Processing Logic
-        fileInput.addEventListener('change', function(e) {
-            if (this.files && this.files[0]) {
-                if (remainingScans <= 0) {
-                    alert("You have exhausted your 5 monthly trial document scans. Please upgrade to enterprise access.");
-                    return;
-                }
-                processMockScan(this.files[0].name);
-            }
-        });
-
-        function processMockScan(fileName) {
-            dropzone.style.display = 'none';
-            loader.style.display = 'flex';
-            laser.style.display = 'block';
-
-            // Simulate the optical scanning delay process
-            setTimeout(() => {
-                loader.style.display = 'none';
-                laser.style.display = 'none';
-                
-                // Show output report module
-                fileNameDisplay.textContent = fileName;
-                resultCard.style.display = 'block';
-                
-                // --- DYNAMIC PERCENTAGE & VALIDATION LOGIC ---
-                // 1. Generate a random score between 40 and 99
-                const dynamicPercentage = Math.floor(Math.random() * (99 - 40 + 1)) + 40;
-                
-                // 2. Target the UI elements inside the result card
-                const percentElement = document.getElementById('confidenceDisplay');
-                const statusBadge = document.getElementById('statusBadge');
-                const verdictText = document.getElementById('verdictText');
-
-                // 3. Update the values, colors, and text based on thresholds
-                percentElement.textContent = dynamicPercentage + '%';
-                
-                if (dynamicPercentage < 60) {
-                    // RED STATE - FAKE
-                    percentElement.style.color = '#ef4444'; 
-                    statusBadge.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
-                    statusBadge.style.color = '#ef4444';
-                    statusBadge.style.borderColor = '#ef4444';
-                    statusBadge.textContent = 'Verification Failed';
-                    verdictText.innerHTML = '<strong>Verdict:</strong> <span style="color: #ef4444; font-weight: bold;">FAKE / TAMPERED</span>. Document elements appear altered or fail structural verification parameters.';
-                    
-                } else if (dynamicPercentage < 80) {
-                    // BLUE STATE - SUSPICIOUS
-                    percentElement.style.color = '#3b82f6';
-                    statusBadge.style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
-                    statusBadge.style.color = '#3b82f6';
-                    statusBadge.style.borderColor = '#3b82f6';
-                    statusBadge.textContent = 'Suspicious Record';
-                    verdictText.innerHTML = '<strong>Verdict:</strong> <span style="color: #3b82f6; font-weight: bold;">INCOMPLETE / UNVERIFIED</span>. Missing metadata fields or low-resolution formatting detected.';
-                    
-                } else {
-                    // GREEN STATE - GENUINE
-                    percentElement.style.color = '#10b981';
-                    statusBadge.style.backgroundColor = 'rgba(16, 185, 129, 0.1)';
-                    statusBadge.style.color = '#10b981';
-                    statusBadge.style.borderColor = '#10b981';
-                    statusBadge.textContent = 'Verified Genuine';
-                    verdictText.innerHTML = '<strong>Verdict:</strong> <span style="color: #10b981; font-weight: bold;">GENUINE CLEARANCE</span>. Cryptographic matches confirmed. Secure record verification complete.';
-                }
-                
-                // Track usage parameters
-                remainingScans--;
-                scanCounter.textContent = remainingScans;
-            }, 3000);
+    sidebarOverlay.addEventListener('click', (e) => {
+        if (e.target === sidebarOverlay) {
+            sidebarOverlay.classList.remove('show');
         }
+    });
+}
 
-        resetBtn.addEventListener('click', () => {
-            resultCard.style.display = 'none';
-            fileInput.value = '';
-            dropzone.style.display = 'flex';
-        });
+// Interactive Scan Workflow Processing Logic
+if (fileInput) {
+    fileInput.addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+            if (remainingScans <= 0) {
+                alert("You have exhausted your 5 monthly trial document scans. Please upgrade to enterprise access.");
+                return;
+            }
+            processMockScan(this.files[0].name);
+        }
+    });
+}
 
-   document.getElementById('logForm').addEventListener('submit', function(event) {
-    event.preventDefault(); 
-    
-    // Capture user selections from the form inputs
-    const selectedEmail = document.getElementById('email').value;
-    const selectedRole = document.getElementById('role').value;
-    
-    // Store them in the browser's temporary memory bank
-    localStorage.setItem('userEmail', selectedEmail);
-    localStorage.setItem('userRole', selectedRole);
-    
-    // Redirect to the dashboard page
-    window.location.href = "dashboard.html"; 
-});
+function processMockScan(fileName) {
+    if (dropzone) dropzone.style.display = 'none';
+    if (loader) loader.style.display = 'flex';
+    if (laser) laser.style.display = 'block';
 
+    // Simulate the optical scanning delay process
+    setTimeout(() => {
+        if (loader) loader.style.display = 'none';
+        if (laser) laser.style.display = 'none';
+        
+        // Show output report module
+        if (fileNameDisplay) fileNameDisplay.textContent = fileName;
+        if (resultCard) resultCard.style.display = 'block';
+        
+        // --- DYNAMIC PERCENTAGE & VALIDATION LOGIC ---
+        // 1. Generate a random score between 40 and 99
+        const dynamicPercentage = Math.floor(Math.random() * (99 - 40 + 1)) + 40;
+        
+        // 2. Target the UI elements inside the result card
+        const percentElement = document.getElementById('confidenceDisplay');
+        const statusBadge = document.getElementById('statusBadge');
+        const verdictText = document.getElementById('verdictText');
+
+        if (percentElement) percentElement.textContent = dynamicPercentage + '%';
+        
+        if (dynamicPercentage < 60) {
+            // RED STATE - FAKE
+            if (percentElement) percentElement.style.color = '#ef4444'; 
+            if (statusBadge) {
+                statusBadge.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
+                statusBadge.style.color = '#ef4444';
+                statusBadge.style.borderColor = '#ef4444';
+                statusBadge.textContent = 'Verification Failed';
+            }
+            if (verdictText) verdictText.innerHTML = '<strong>Verdict:</strong> <span style="color: #ef4444; font-weight: bold;">FAKE / TAMPERED</span>. Document elements appear altered or fail structural verification parameters.';
+            
+        } else if (dynamicPercentage < 80) {
+            // BLUE STATE - SUSPICIOUS
+            if (percentElement) percentElement.style.color = '#3b82f6';
+            if (statusBadge) {
+                statusBadge.style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
+                statusBadge.style.color = '#3b82f6';
+                statusBadge.style.borderColor = '#3b82f6';
+                statusBadge.textContent = 'Suspicious Record';
+            }
+            if (verdictText) verdictText.innerHTML = '<strong>Verdict:</strong> <span style="color: #3b82f6; font-weight: bold;">INCOMPLETE / UNVERIFIED</span>. Missing metadata fields or low-resolution formatting detected.';
+            
+        } else {
+            // GREEN STATE - GENUINE
+            if (percentElement) percentElement.style.color = '#10b981';
+            if (statusBadge) {
+                statusBadge.style.backgroundColor = 'rgba(16, 185, 129, 0.1)';
+                statusBadge.style.color = '#10b981';
+                statusBadge.style.borderColor = '#10b981';
+                statusBadge.textContent = 'Verified Genuine';
+            }
+            if (verdictText) verdictText.innerHTML = '<strong>Verdict:</strong> <span style="color: #10b981; font-weight: bold;">GENUINE CLEARANCE</span>. Cryptographic matches confirmed. Secure record verification complete.';
+        }
+        
+        // Track usage parameters
+        remainingScans--;
+        if (scanCounter) scanCounter.textContent = remainingScans;
+    }, 3000);
+}
+
+if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+        if (resultCard) resultCard.style.display = 'none';
+        if (fileInput) fileInput.value = '';
+        if (dropzone) dropzone.style.display = 'flex';
+    });
+}
+
+const logForm = document.getElementById('logForm');
+if (logForm) {
+    logForm.addEventListener('submit', function(event) {
+        event.preventDefault(); 
+        
+        // Capture user selections from the form inputs
+        const selectedEmail = document.getElementById('email').value;
+        const selectedRole = document.getElementById('role').value;
+        
+        // Store them in the browser's temporary memory bank
+        localStorage.setItem('userEmail', selectedEmail);
+        localStorage.setItem('userRole', selectedRole);
+        
+        // Redirect to the dashboard page
+        window.location.href = "dashboard.html"; 
+    });
+}

@@ -7,10 +7,15 @@ from PIL import Image
 import pytesseract
 
 app = Flask(__name__)
-CORS(app)
 
-# Explicit Tesseract Path Configuration
-pytesseract.pytesseract.tesseract_cmd = r'F:\Program Files\Tesseract-OCR\tesseract.exe'
+# Enable CORS for all routes and origins
+CORS(app, resources={r"/*": {"origins": "*"}})
+
+# Tesseract Path Configuration
+# Checks if custom path is set in environment, otherwise defaults to local Windows path or system PATH
+TESSERACT_PATH = os.getenv('TESSERACT_PATH', r'F:\Program Files\Tesseract-OCR\tesseract.exe')
+if os.path.exists(TESSERACT_PATH):
+    pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
 
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -55,7 +60,7 @@ def register():
         "last_name": data.get('last_name'),
         "email": data.get('email'),
         "phone": data.get('phone'),
-        "location": data.get('location', '-'),  # 保存されたロケーション
+        "location": data.get('location', '-'),
         "password": data.get('password'),
         "role": data.get('role', 'Verifier')
     }
@@ -84,7 +89,7 @@ def login():
                     "last_name": u.get('last_name'),
                     "email": u.get('email'),
                     "phone": u.get('phone'),
-                    "location": u.get('location', '-'),  # Sent back to your profile view layout cache
+                    "location": u.get('location', '-'),
                     "role": u.get('role')
                 }
             })
@@ -181,7 +186,7 @@ def change_password():
     else:
         return jsonify({"status": "error", "message": "Current password authentication failed."}), 400
 
-
 # --- Server Initialization Execution Block ---
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
