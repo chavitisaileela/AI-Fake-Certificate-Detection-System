@@ -566,20 +566,20 @@
         }
 
        .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(15, 23, 42, 0.6);
-    -webkit-backdrop-filter: blur(4px); 
-    backdrop-filter: blur(4px);       
-    z-index: 1000;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            -webkit-backdrop-filter: blur(4px); 
+            backdrop-filter: blur(4px);       
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
         .modal-overlay.active {
             display: flex;
@@ -844,7 +844,6 @@
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <nav class="sidebar-drawer" id="sidebarDrawer">
-        <!-- FIXED: Updated href to trail.html -->
         <a href="trail.html" class="nav-item">
             <i class="fa-solid fa-wand-magic-sparkles"></i> Try Trial
         </a>
@@ -952,7 +951,6 @@
                             <li><i class="fa-solid fa-check"></i> Standard Verification Flow</li>
                             <li><i class="fa-solid fa-check"></i> Basic Percentage Score</li>
                         </ul>
-                        <!-- FIXED: Updated href to trail.html -->
                         <a href="trail.html" class="price-btn secondary">Get Started</a>
                     </div>
                     
@@ -975,7 +973,6 @@
             <section class="cta-section">
                 <h2>Ready to Verify a Document?</h2>
                 <p>Upload your file to generate an instant authenticity analysis report with percentage scoring metrics.</p>
-                <!-- FIXED: Updated href to trail.html -->
                 <a href="trail.html" class="cta-btn">Free Trial</a>
             </section>
 
@@ -1030,7 +1027,7 @@
                     <label class="form-label">Cardholder Name</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-user input-icon"></i>
-                        <input type="text" class="form-input" placeholder="John Doe" required>
+                        <input type="text" class="form-input" placeholder="John Doe" autocomplete="cc-name" required>
                     </div>
                 </div>
 
@@ -1038,18 +1035,18 @@
                     <label class="form-label">Card Number</label>
                     <div class="input-wrapper">
                         <i class="fa-solid fa-credit-card input-icon"></i>
-                        <input type="text" class="form-input" placeholder="4111 2222 3333 4444" required maxlength="19">
+                        <input type="text" class="form-input" placeholder="4111 2222 3333 4444" autocomplete="cc-number" required maxlength="19">
                     </div>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Expiration</label>
-                        <input type="text" class="form-input no-icon" placeholder="MM/YY" required maxlength="5">
+                        <input type="text" class="form-input no-icon" placeholder="MM/YY" autocomplete="cc-exp" required maxlength="5">
                     </div>
                     <div class="form-group">
                         <label class="form-label">CVV</label>
-                        <input type="password" class="form-input no-icon" placeholder="123" required maxlength="4">
+                        <input type="text" class="form-input no-icon" placeholder="123" autocomplete="cc-csc" required maxlength="4">
                     </div>
                 </div>
 
