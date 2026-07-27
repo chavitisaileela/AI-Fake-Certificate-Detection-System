@@ -1059,7 +1059,7 @@
     </div>
 
     <!-- BACKEND TEST BUTTON -->
-    <button class="backend-test-btn" onclick="testColabConnection()"><i class="fa-solid fa-server"></i> Test Colab Connection</button>
+    <button class="backend-test-btn" onclick="testColabConnection()"><i class="fa-solid fa-server"></i> Test Connection</button>
 
     <script>
         const menuBtn = document.getElementById('menuBtn');
@@ -1151,17 +1151,17 @@
             }
         });
 
-        /* --- NGROK BACKEND TEST SCRIPT --- */
-        const BACKEND_URL = "https://liver-avid-sudden.ngrok-free.dev";
+        /* --- RENDER BACKEND TEST SCRIPT --- */
+        const BACKEND_URL = "https://ai-fake-certificate-detection-system.onrender.com";
 
         async function testColabConnection() {
             try {
-                const response = await fetch(`${BACKEND_URL}/test`);
+                const response = await fetch(`${BACKEND_URL}/`);
                 const data = await response.json();
-                alert(data.message || "LeelaX AI Backend is Live on Google Colab!");
+                alert(data.message || "LeelaX AI Backend is Live on Render!");
             } catch (error) {
                 console.error("Connection failed:", error);
-                alert("Could not reach Colab backend. Make sure your Colab cell and ngrok server are active!");
+                alert("Could not reach Render backend. Please verify that your service is running.");
             }
         }
     </script>
